@@ -1,0 +1,11 @@
+{
+  "name": "PongLaser",
+  "description": "PongLaser frontend",
+  "version": "1.0.0",
+  "homepage": "https://github.com/maxaille/PongFest-front",
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x"
+  }
+}
