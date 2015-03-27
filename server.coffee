@@ -5,9 +5,11 @@ WebSocketServer = require("websocket").server
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
+bodyParser = require 'body-parser'
 app = express()
 
 app.use express.static(__dirname + '/public')
+app.use bodyParser.json()
 
 mongoose = require 'mongoose'
 mongoose.connect process.env.MONGO_URL || 'mongodb://localhost/shadok-api'
