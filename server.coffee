@@ -2,7 +2,6 @@
 #
 
 WebSocketServer = require("websocket").server
-FB = require 'facebook-node-sdk'
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
@@ -34,34 +33,38 @@ app.use (req, res, next) ->
 
 # Homepage
 app.post "/users", (req, res) ->
-  token = req.body.token
+  token = req.body.id
   if !token
     token = randtoken.generate(16)
-    name = req.body.name
-    user = new User token: token, name: name
-    req.send user
-  else
-    FB.setAccessToken(token)
-    FB.api 'me', { fields: ['id', 'name'] }, (res) ->
-      if res or res.error
-        console.log(!res ? 'error occurred' : res.error)
-        return
 
-      console.log res.id
-      console.log res.name
-      user = new User token: token, name: name
-      user.save (err) ->
-        console.error("fail to save user" + user + ":" + err) if err
-        res.send user
+  name = req.body.name || req.body.first_name + " " + req.body.last_name
+  user = new User token: token, name: name
+  user.save (err) ->
+    console.error("fail to save user" + user + ":" + err) if err
+    res.send user
 
-app.patch "/users/:facebook_token", (req, res) ->
+app.patch "/users/:token", (req, res) ->
   User.find token: req.params.token, (err, users) ->
-    console.error(err) if err
-    console.error("user not found " + token) if users.length == 0
+    if err
+      console.error(err)
+      req.status 500
+      req.send "internal error"
+      return
+
+    if users.length == 0
+      req.status 404
+      req.send "not found"
+      return
+
     user = users[0]
     user.role = req.body.role
     user.save (err) ->
-      console.error("fail to update user" + user + ":" + err) if err
+      if err
+        console.error("fail to update user" + user + ":" + err)
+        req.status 500
+        req.send "internal error"
+        return
+      res.send user
 
 app.get "/leaderboard", (req, res) ->
   req.send("leaderboard")
