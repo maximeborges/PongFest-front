@@ -22,7 +22,6 @@
 
 
 	<script>
-
 		var doughnutData = [
 				{
 					value: 120,
@@ -43,8 +42,11 @@
 				window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
 			};
 
-
-
+			window.setInterval(function(){
+				window.myDoughnut.segments[0].value = Math.floor(Math.random()*150);
+				window.myDoughnut.segments[1].value = Math.floor(Math.random()*150);
+			  	window.myDoughnut.update();
+			}, 500);
 	</script>
 	</body>
 </html>
