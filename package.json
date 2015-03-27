@@ -4,15 +4,13 @@
   "description": "Shadok inauguration API",
   "main": "server.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "coffee server.coffee"
   },
   "author": "Leo Unbekandt",
   "license": "MIT",
-  "scripts": {
-    "start": "coffee server.coffee"
-  },
   "dependencies": {
     "coffee-script": "^1.9.1",
-    "express": "^4.12.3"
+    "express": "^4.12.3",
+    "websocket": "^1.0.18"
   }
 }
