@@ -77,6 +77,8 @@ app.post "/api/score", (req, res) ->
   console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
     client.send {event: "score", score: score}
+  res.status 204
+  res.send ""
 
 server = http.createServer app
 server.listen process.env.PORT || 3000, () ->
