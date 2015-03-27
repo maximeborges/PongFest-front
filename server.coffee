@@ -72,6 +72,7 @@ app.get "/api/leaderboard", (req, res) ->
 # From laser server
 app.post "/api/score", (req, res) ->
   score = {left: req.body.left, right: req.body.right}
+  console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
     client.send {event: "score", score: score}
 
