@@ -5,7 +5,7 @@
   "homepage": "https://github.com/maxaille/PongFest-front",
   "dependencies": {
     "angular": "1.2.x",
-    "angular-route": "1.2.x",
-    "angular-loader": "1.2.x"
+    "angular-facebook": "~0.2.3",
+    "angular-ui-router": "~0.2.13"
   }
 }
