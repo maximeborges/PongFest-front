@@ -2,7 +2,7 @@
 #
 
 WebSocketServer = require("websocket").server
-FB = require 'fb'
+FB = require 'facebook-node-sdk'
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
