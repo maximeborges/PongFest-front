@@ -37,7 +37,7 @@ app.post "/users", (req, res) ->
   if !token
     token = randtoken.generate(16)
 
-  name = req.body.name || req.body.first_name + " " + req.body.last_name
+  name = req.body.name || req.body.firstName + " " + req.body.lastName
   user = new User token: token, name: name
   user.save (err) ->
     console.error("fail to save user" + user + ":" + err) if err
@@ -48,12 +48,12 @@ app.patch "/users/:token", (req, res) ->
     if err
       console.error(err)
       req.status 500
-      req.send "internal error"
+      res.send "internal error"
       return
 
     if users.length == 0
       req.status 404
-      req.send "not found"
+      res.send "not found"
       return
 
     user = users[0]
@@ -62,12 +62,12 @@ app.patch "/users/:token", (req, res) ->
       if err
         console.error("fail to update user" + user + ":" + err)
         req.status 500
-        req.send "internal error"
+        res.send "internal error"
         return
       res.send user
 
 app.get "/leaderboard", (req, res) ->
-  req.send("leaderboard")
+  res.send "leaderboard"
 
 # From laser server
 app.post "/score", (req, res) ->
