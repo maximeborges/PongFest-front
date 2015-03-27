@@ -28,8 +28,8 @@ userSchema = mongoose.Schema({
 User = mongoose.model("User", userSchema)
 
 app.use (req, res, next) ->
-  console.log(req.path)
-  next(req, res)
+  console.log(new Date() + " " + req.path)
+  next()
 
 # Homepage
 app.post "/users", (req, res) ->
