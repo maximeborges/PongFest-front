@@ -32,7 +32,7 @@ app.use (req, res, next) ->
   next()
 
 # Homepage
-app.post "/users", (req, res) ->
+app.post "/api/users", (req, res) ->
   token = req.body.id
   if !token
     token = randtoken.generate(16)
@@ -43,7 +43,7 @@ app.post "/users", (req, res) ->
     console.error("fail to save user" + user + ":" + err) if err
     res.send user
 
-app.patch "/users/:token", (req, res) ->
+app.patch "/api/users/:token", (req, res) ->
   User.find token: req.params.token, (err, users) ->
     if err
       console.error(err)
@@ -66,12 +66,13 @@ app.patch "/users/:token", (req, res) ->
         return
       res.send user
 
-app.get "/leaderboard", (req, res) ->
+app.get "/api/leaderboard", (req, res) ->
   res.send "leaderboard"
 
 # From laser server
-app.post "/score", (req, res) ->
+app.post "/api/score", (req, res) ->
   score = {left: req.body.left, right: req.body.right}
+  console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
     client.send {event: "score", score: score}
 
