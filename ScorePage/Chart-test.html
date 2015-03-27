@@ -1,28 +1,25 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Chart pour Highscore</title>
-		<script src="./Chart.js/Chart.js"></script>
-		<style type="text/css">
-				<style>
-			body{
-				padding: 0;
-				margin: 0;
-			}
-			#canvas-holder{
-				width:40%;
-			}
-		</style>
-		</style>
-	</head>
-	<body>
-		<div id="canvas-holder">
-			<canvas id="chart-area" width="500" height="500"/>
-		</div>
+<head>
+	<title>Chart pour Highscore</title>
+	<script src="./Chart.js/Chart.js"></script>
+	<style type="text/css">
+		body{
+			padding: 0;
+			margin: 0;
+		}
+		#canvas-holder{
+			width:20%;
+		}
+	</style>
+</head>
+<body>
+	<div id="canvas-holder">
+		<canvas id="chart-area" width="500" height="500"/>
+	</div>
 
 
 	<script>
-
 		var doughnutData = [
 				{
 					value: 120,
@@ -43,8 +40,11 @@
 				window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
 			};
 
-
-
+			window.setInterval(function(){
+				window.myDoughnut.segments[0].value = Math.floor(Math.random()*150);
+				window.myDoughnut.segments[1].value = Math.floor(Math.random()*150);
+			  	window.myDoughnut.update();
+			}, 5000);
 	</script>
-	</body>
+</body>
 </html>
