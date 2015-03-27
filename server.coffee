@@ -32,63 +32,64 @@ app.use (req, res, next) ->
   next(req, res)
 
 # Homepage
-app.post "/users", (req, res) ->
-  token = req.body.id
-  if !token
-    token = randtoken.generate(16)
+app.namespace '/api', () ->
+  app.post "/users", (req, res) ->
+    token = req.body.id
+    if !token
+      token = randtoken.generate(16)
 
-  name = req.body.name || req.body.first_name + " " + req.body.last_name
-  user = new User token: token, name: name
-  user.save (err) ->
-    console.error("fail to save user" + user + ":" + err) if err
-    res.send user
-
-app.patch "/users/:token", (req, res) ->
-  User.find token: req.params.token, (err, users) ->
-    if err
-      console.error(err)
-      req.status 500
-      req.send "internal error"
-      return
-
-    if users.length == 0
-      req.status 404
-      req.send "not found"
-      return
-
-    user = users[0]
-    user.role = req.body.role
+    name = req.body.name || req.body.firstName + " " + req.body.lastName
+    user = new User token: token, name: name
     user.save (err) ->
+      console.error("fail to save user" + user + ":" + err) if err
+      res.send user
+
+  app.patch "/users/:token", (req, res) ->
+    User.find token: req.params.token, (err, users) ->
       if err
-        console.error("fail to update user" + user + ":" + err)
+        console.error(err)
         req.status 500
         req.send "internal error"
         return
-      res.send user
 
-app.get "/leaderboard", (req, res) ->
-  req.send("leaderboard")
+      if users.length == 0
+        req.status 404
+        req.send "not found"
+        return
 
-# From laser server
-app.post "/score", (req, res) ->
-  score = {left: req.body.left, right: req.body.right}
-  wsClients.forEach (client) ->
-    client.send {event: "score", score: score}
+      user = users[0]
+      user.role = req.body.role
+      user.save (err) ->
+        if err
+          console.error("fail to update user" + user + ":" + err)
+          req.status 500
+          req.send "internal error"
+          return
+        res.send user
 
-server = http.createServer app
-server.listen process.env.PORT || 3000, () ->
-  host = server.address().address
-  port = server.address().port
-  console.log 'App listening at http://%s:%s', host, port
+  app.get "/leaderboard", (req, res) ->
+    req.send("leaderboard")
 
-wss = new WebSocketServer httpServer: server, path: "/ws"
+  # From laser server
+  app.post "/score", (req, res) ->
+    score = {left: req.body.left, right: req.body.right}
+    wsClients.forEach (client) ->
+      client.send {event: "score", score: score}
 
-wss.on 'request', (request) ->
-  connection = request.accept null, request.origin ->
-    wsClients.push(connection)
-    connection.on 'message', (message) ->
-      event = JSON.parse(message)
-      console.log(event)
+  server = http.createServer app
+  server.listen process.env.PORT || 3000, () ->
+    host = server.address().address
+    port = server.address().port
+    console.log 'App listening at http://%s:%s', host, port
 
-    connection.on 'close', (connection) ->
-      console.log(connection)
+  wss = new WebSocketServer httpServer: server, path: "/ws"
+
+  wss.on 'request', (request) ->
+    connection = request.accept null, request.origin ->
+      wsClients.push(connection)
+      connection.on 'message', (message) ->
+        event = JSON.parse(message)
+        console.log(event)
+
+      connection.on 'close', (connection) ->
+        console.log(connection)
