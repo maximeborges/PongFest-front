@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Chart pour Highscore</title>
+		<script src="./Chart.js/Chart.js"></script>
+		<style type="text/css">
+				<style>
+			body{
+				padding: 0;
+				margin: 0;
+			}
+			#canvas-holder{
+				width:40%;
+			}
+		</style>
+		</style>
+	</head>
+	<body>
+		<div id="canvas-holder">
+			<canvas id="chart-area" width="500" height="500"/>
+		</div>
+
+
+	<script>
+
+		var doughnutData = [
+				{
+					value: 120,
+					color:"#CC1700",
+					highlight: "#FF1C00",
+					label: "Anarchiste"
+				},
+				{
+					value: 80,
+					color: "#41CC00",
+					highlight: "#51FF00",
+					label: "Bienveillant"
+				}
+			];
+
+			window.onload = function(){
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+			};
+
+
+
+	</script>
+	</body>
+</html>
