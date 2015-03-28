@@ -5,9 +5,11 @@ WebSocketServer = require("websocket").server
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
+bodyParser = require 'body-parser'
 app = express()
 
 app.use express.static(__dirname + '/public')
+app.use bodyParser.json()
 
 mongoose = require 'mongoose'
 mongoose.connect process.env.MONGO_URL || 'mongodb://localhost/shadok-api'
@@ -75,6 +77,8 @@ app.post "/api/score", (req, res) ->
   console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
     client.send {event: "score", score: score}
+  res.status 204
+  res.send ""
 
 server = http.createServer app
 server.listen process.env.PORT || 3000, () ->

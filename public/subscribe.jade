@@ -1,0 +1,26 @@
+head
+  title Lettre d'informations | Alsace digitale
+  meta(charset='UTF-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css', rel='stylesheet', media='all')
+  link(href='styles.css', rel='stylesheet', media='all')
+.container
+  .row
+    .col-md-12
+      img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
+      h1.title.text-center Tenez-vous informés de nos prochains événements !
+      form#form-subscribe(action='#')
+        .form-group
+          label(for='exampleInputEmail1') Nom
+          input#exampleInputEmail1.form-control(type='text', placeholder='Tapez votre nom')
+        .form-group
+          label(for='firstname') Prénom
+          input#firstname.form-control(type='text', placeholder='Tapez votre prénom')
+        .form-group
+          label(for='email') Addresse Email
+          input#email.form-control(type='email', placeholder='Tapez votre addresse email')
+        .form-group
+          input.btn.btn-lg.btn-default.col-md-12(type='submit', value='Valider')
+script(src='lib/angular/angular.js')
+script(src='lib/angular-route/angular-route.js')
+script(src='app.js')
