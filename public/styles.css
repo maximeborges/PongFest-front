@@ -2,5 +2,51 @@ body { background: #162741; }
 .container { max-width: 720px; }
 #logo { max-width: 100%;  margin: auto; display: block; margin-top: 30px; }
 .title { color: white; width: 100%; }
-#form-subscribe label { color: #eee; }
+#form-subscribe label { color: #eee; }
 #form-subscribe  input[type=submit] { margin-top: 5px; }
+.center {
+    float: none;
+    display: block;
+    margin: 0 auto;
+}
+/*  START  */
+img.facebook-connect {
+    display: block;
+    margin: 20px auto;
+    width: 41%;
+    max-width: 200px;
+    cursor: pointer;
+}
+a.pseudo-toggle {
+    text-align: center;
+    display: block;
+    cursor: pointer;
+}
+div.pseudo-form {
+    margin: 10px auto;
+    float: none;
+}
+
+/* SELECT */
+.select {
+    text-align: center;
+    margin: 30px 0 0 0;
+}
+button.red-team {
+    border: none;
+    background: #E42020;
+    width: 110px;
+    height: 35px;
+    color: white;
+}
+button.blue-team {
+    border: none;
+    background: #4159e4;
+    width: 110px;
+    height: 35px;
+    color: white;
+}
+span.vs {
+    margin: 15px;
+    color: white;
+}

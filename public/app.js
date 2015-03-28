@@ -33,62 +33,42 @@ angular.module('LaserPong', [
             controller: 'subscribeCtrl'
         })
 }])
-.controller('startCtrl', ['$scope', '$timeout', 'Facebook', '$http', function($scope, $timeout, Facebook, $http) {
+.controller('startCtrl', ['$scope', '$timeout', 'Facebook', '$http', '$state',
+function($scope, $timeout, Facebook, $http, $state) {
+    $scope.pseudoToggle = false;
     $scope.user = {};
 
     $scope.logged = false;
 
-    $scope.$watch(
-        function() {
-            return Facebook.isReady();
-        },
-        function(newVal) {
-            if (newVal)
-                $scope.facebookReady = true;
-        }
-    );
-
-    var userIsConnected = false;
-
     Facebook.getLoginStatus(function(response) {
         if (response.status == 'connected') {
-            userIsConnected = true;
+            $scope.logged = true;
         }
     });
-
-    /**
-     * IntentLogin
-     */
-    $scope.IntentLogin = function() {
-        if(!userIsConnected) {
-            $scope.login();
-        }
-    };
 
     /**
      * Login
      */
     $scope.login = function() {
-        Facebook.login(function(response) {
-            if (response.status == 'connected') {
-                $scope.logged = true;
-                $scope.me();
-            }
-
-        });
+        if(!$scope.logged)
+            Facebook.login(function(response) {
+                if (response.status == 'connected') {
+                    $scope.logged = true;
+                    $scope.me();
+                }
+            });
     };
 
     /**
-     * me
+     * Get current user infos
      */
-    $scope.me = function() {
+    $scope.me = function(callback) {
         Facebook.api('/me', function(response) {
-            /**
-             * Using $scope.$apply since this happens outside angular framework.
-             */
             $scope.$apply(function() {
                 $scope.user = response;
             });
+            if(typeof callback == 'function')
+                callback(response);
 
         });
     };
@@ -96,38 +76,56 @@ angular.module('LaserPong', [
     /**
      * Logout
      */
-    $scope.logout = function() {
-        Facebook.logout(function() {
-            $scope.$apply(function() {
-                $scope.user   = {};
-                $scope.logged = false;
+    /*$scope.logout = function() {
+        if($scope.logged)
+            Facebook.logout(function() {
+                $scope.$apply(function() {
+                    $scope.user   = {};
+                    $scope.logged = false;
+                });
             });
-        });
+    };*/
+
+
+
+    /**
+     * Connect
+     */
+    $scope.connect = function(user) {
+        var infos = {};
+        if(typeof user === "object")
+            infos = {
+                id: user.id,
+                firstName: user.first_name,
+                lastName: user.last_name
+            };
+        else infos = {name: pseudo};
+
+        $http.post('/api/users', infos
+        ).success(function(resp) {
+            $state.go('select');
+            console.log(resp)
+        }).error(function(err) {
+            console.log(err)
+        })
     };
 
     /**
-     * Taking approach of Events :D
+     * Events
      */
     $scope.$on('Facebook:statusChange', function(ev, data) {
-        console.log('Status: ', data);
+        console.log("Status: ", data);
         if (data.status == 'connected') {
-            $scope.$apply(function() {
-                $http.post('/api/users', {
-                        id: $scope.user.id,
-                        firstName: $scope.user.first_name,
-                        lastName: $scope.user.last_name
-                    }, function(resp) {
-                        console.log(resp)
-                    })
-            });
-        } else {
-            $scope.$apply(function() {
-
+            // Get current user
+            $scope.me(function(user) {
+                $scope.connect(user);
             });
         }
-
-
     });
+}])
+.controller('selectCtrl', ['$scope', '$timeout', 'Facebook', '$http', '$state',
+function($scope, $timeout, Facebook, $http, $state) {
+
 }])
 .controller('subscribeCtrl', ['$scope', function($scope) {
     //$scope

@@ -1,10 +1,14 @@
-button(data-ng-click='IntentLogin()') Login
-button(data-ng-click='logout()') Logout
-
-span Name: {{user.first_name}} {{user.last_name}}
-
 .container
     .row
         .col-md-12
             img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
             h1.title.text-center Prêts à jouer ?
+
+            img.facebook-connect(src="facebook-connect.png" ng-click="login()")
+            div
+                a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle") Ou avec un pseudo
+            .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
+                .input-group
+                    input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
+                    span.input-group-btn
+                        button.btn.btn-default(type='button' ng-click="connect(pseudo)") Go !
