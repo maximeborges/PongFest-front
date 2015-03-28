@@ -17,15 +17,14 @@ mongoose.connect process.env.MONGO_URL || 'mongodb://localhost/shadok-api'
 db = mongoose.connection
 db.on 'error', console.error.bind(console, 'connection error:')
 db.once 'open', (callback) ->
-  console.log("connection to database opened")
+  console.log "connection to database opened"
 
 wsClients = []
 
-userSchema = mongoose.Schema({
+userSchema = mongoose.Schema
   name: String
   token: String
   role: String
-})
 
 User = mongoose.model("User", userSchema)
 
@@ -94,6 +93,13 @@ wss.on 'request', (request) ->
     connection.on 'message', (message) ->
       event = JSON.parse(message)
       console.log(event)
+      if event.type == "input"
+        if event.input == "up"
+          up += 1
+        else if event.input == "down"
+          down += 1
+        else
+          console.error("invalid input, event: " + JSON.stringify(event))
 
     connection.on 'close', (connection) ->
       console.log(connection)
