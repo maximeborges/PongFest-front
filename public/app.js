@@ -27,6 +27,11 @@ angular.module('LaserPong', [
             templateUrl: 'game.html',
             controller: 'gameCtrl'
         })
+        .state('subscribe', {
+            url: '/subscribe',
+            templateUrl: 'subscribe.html',
+            controller: 'subscribeCtrl'
+        })
 }])
 .controller('startCtrl', ['$scope', '$timeout', 'Facebook', '$http', function($scope, $timeout, Facebook, $http) {
     $scope.user = {};
@@ -123,6 +128,9 @@ angular.module('LaserPong', [
 
 
     });
+}])
+.controller('subscribeCtrl', ['$scope', function($scope) {
+    //$scope
 }])
 .run(['$window', '$rootScope', '$state', function($window, $rootScope, $state) {
     $rootScope.$state = $state;
