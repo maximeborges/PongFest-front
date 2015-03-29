@@ -33,105 +33,112 @@ angular.module('LaserPong', [
             controller: 'subscribeCtrl'
         })
 }])
-.controller('startCtrl', ['$scope', '$timeout', 'Facebook', '$http', '$state',
-function($scope, $timeout, Facebook, $http, $state) {
+.controller('startCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
+function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $scope.pseudoToggle = false;
-    $scope.user = {};
-
-    $scope.logged = false;
-
-    Facebook.getLoginStatus(function(response) {
-        if (response.status == 'connected') {
-            $scope.logged = true;
-        }
-    });
 
     /**
-     * Login
-     */
-    $scope.login = function() {
-        if(!$scope.logged)
-            Facebook.login(function(response) {
-                if (response.status == 'connected') {
-                    $scope.logged = true;
-                    $scope.me();
-                }
-            });
-    };
-
-    /**
-     * Get current user infos
-     */
-    $scope.me = function(callback) {
-        Facebook.api('/me', function(response) {
-            $scope.$apply(function() {
-                $scope.user = response;
-            });
-            if(typeof callback == 'function')
-                callback(response);
-
-        });
-    };
-
-    /**
-     * Logout
-     */
-    /*$scope.logout = function() {
-        if($scope.logged)
-            Facebook.logout(function() {
-                $scope.$apply(function() {
-                    $scope.user   = {};
-                    $scope.logged = false;
-                });
-            });
-    };*/
-
-
-
-    /**
-     * Connect
+     * Send user infos to the server
      */
     $scope.connect = function(user) {
         var infos = {};
         if(typeof user === "object")
             infos = {
                 id: user.id,
-                firstName: user.first_name,
-                lastName: user.last_name
+                name: user.first_name + ' ' + user.last_name
             };
-        else infos = {name: pseudo};
+        else {
+            infos = {name: user};
+        }
 
         $http.post('/api/users', infos
         ).success(function(resp) {
+            $rootScope.user = {
+                id: resp._id,
+                token: resp.token,
+                name: resp.name
+            };
             $state.go('select');
-            console.log(resp)
         }).error(function(err) {
             console.log(err)
         })
     };
 
+    // Watch the connection of the user via facebook
+    /*$rootScope.$watch(function() {
+        return $rootScope.user;
+    }, function(newVal, oldVal) {
+        if(!!newVal) {
+            $scope.connect($rootScope.user);
+        }
+    });*/
+}])
+.controller('selectCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
+function($rootScope, $scope, $timeout, Facebook, $http, $state) {
+    $scope.disconnect = function() {
+        Facebook.getLoginStatus(function(response) {
+            if(response.status === 'connected') {
+                FB.logout();
+            } else {
+                $rootScope.user = null;
+                $rootScope.logged = false;
+            }
+            $state.go('start');
+        });
+    };
+}])
+.controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+    //$scope
+}])
+.run(['$window', '$rootScope', '$state', 'Facebook', function($window, $rootScope, $state, Facebook) {
+    $rootScope.user = null;
+
+    $rootScope.logged = false;
+
+    $rootScope.FB = {
+        login: function() {
+            if(!$rootScope.logged)
+                Facebook.login();
+        },
+        logout: function() {
+            if($rootScope.logged)
+                Facebook.logout(function() {
+                    $rootScope.$apply(function() {
+                        $rootScope.user = null;
+                        $rootScope.logged = false;
+                    });
+                });
+        },
+        me: function() {
+            Facebook.api('/me', function(response) {
+                $rootScope.$apply(function() {
+                    $rootScope.user = response;
+                });
+            });
+        }
+    };
+
     /**
      * Events
      */
-    $scope.$on('Facebook:statusChange', function(ev, data) {
+    $rootScope.$on('Facebook:statusChange', function(ev, data) {
         console.log("Status: ", data);
         if (data.status == 'connected') {
-            // Get current user
-            $scope.me(function(user) {
-                $scope.connect(user);
-            });
+            $rootScope.logged = true;
+            $rootScope.FB.me();
+        }
+        if (data.status == 'unknown') {
+            $rootScope.logged = false;
         }
     });
-}])
-.controller('selectCtrl', ['$scope', '$timeout', 'Facebook', '$http', '$state',
-function($scope, $timeout, Facebook, $http, $state) {
 
-}])
-.controller('subscribeCtrl', ['$scope', function($scope) {
-    //$scope
-}])
-.run(['$window', '$rootScope', '$state', function($window, $rootScope, $state) {
-    $rootScope.$state = $state;
+    // States
+    $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+        if(!$rootScope.user && toState.name != 'start') {
+            e.preventDefault();
+            $state.go('start');
+        }
+    });
 }]);
 
 

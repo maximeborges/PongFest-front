@@ -4,11 +4,15 @@
             img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
             h1.title.text-center Prêts à jouer ?
 
-            img.facebook-connect(src="facebook-connect.png" ng-click="login()")
-            div
+            div(ng-switch="logged")
+                img.facebook-connect(ng-switch-when="false" src="facebook-connect.png" ng-click="FB.login()")
+                div(ng-switch-when="true")
+                    | connecté en tant que {{user.name}}
+                    a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
+            div(ng-hide="logged")
                 a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle") Ou avec un pseudo
             .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
                 .input-group
                     input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
-                    span.input-group-btn
-                        button.btn.btn-default(type='button' ng-click="connect(pseudo)") Go !
+            span(ng-show="!!user || pseudo")
+                button.btn.btn-default(type='button' ng-click="connect(user?user:pseudo)") Jouer !
