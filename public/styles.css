@@ -1,9 +1,13 @@
-body { background: #162741; }
+body { background: #162741; color: #fff; font-size: 18px; }
 .container { max-width: 720px; }
 #logo { max-width: 100%;  margin: auto; display: block; margin-top: 30px; }
 .title { color: white; width: 100%; }
 #form-subscribe label { color: #eee; }
 #form-subscribe  input[type=submit] { margin-top: 5px; }
+img { max-width: 100%; }
+.divider { margin-top: 20px; }
+.vline-right { border-right: 1px solid #eee; }
+.vcenter { display: inline-block; vertical-align: middle; float: none; }
 .center {
     float: none;
     display: block;
