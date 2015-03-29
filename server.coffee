@@ -6,10 +6,14 @@ randtoken = require "rand-token"
 http = require "http"
 express = require "express"
 bodyParser = require 'body-parser'
-app = express()
 
+app = express()
+app.set 'view engine', 'jade'
 app.use express.static(__dirname + '/public')
 app.use bodyParser.json()
+app.use (req, res, next) ->
+  console.log(new Date() + " - " + req.ip + " - " + req.path)
+  next()
 
 mongoose = require 'mongoose'
 mongoose.connect process.env.MONGO_URL || 'mongodb://localhost/shadok-api'
@@ -28,9 +32,9 @@ userSchema = mongoose.Schema
 
 User = mongoose.model("User", userSchema)
 
-app.use (req, res, next) ->
-  console.log(new Date() + " " + req.path)
-  next()
+
+app.get "/", (req, res) ->
+  res.render "index"
 
 # Homepage
 app.post "/api/users", (req, res) ->

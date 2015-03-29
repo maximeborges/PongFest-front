@@ -6,33 +6,32 @@ angular.module('LaserPong', [
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
     function($stateProvider, $urlRouterProvider, FacebookProvider) {
+        FacebookProvider.init(window.FACEBOOK_APP_ID + "");
 
-    FacebookProvider.init('893554934040564');
-
-    $urlRouterProvider.otherwise("/start");
-
-    $stateProvider
-        .state('start', {
-            url: '/start',
-            templateUrl: 'start.html',
-            controller: 'startCtrl'
-        })
-        .state('select', {
-            url: '/select',
-            templateUrl: 'select.html',
-            controller: 'selectCtrl'
-        })
-        .state('game', {
-            url: '/game',
-            templateUrl: 'game.html',
-            controller: 'gameCtrl'
-        })
-        .state('subscribe', {
-            url: '/subscribe',
-            templateUrl: 'subscribe.html',
-            controller: 'subscribeCtrl'
-        })
-}])
+        $urlRouterProvider.otherwise("/start");
+        $stateProvider
+            .state('start', {
+                url: '/start',
+                templateUrl: 'start.html',
+                controller: 'startCtrl'
+            })
+            .state('select', {
+                url: '/select',
+                templateUrl: 'select.html',
+                controller: 'selectCtrl'
+            })
+            .state('game', {
+                url: '/game',
+                templateUrl: 'game.html',
+                controller: 'gameCtrl'
+            })
+            .state('subscribe', {
+                url: '/subscribe',
+                templateUrl: 'subscribe.html',
+                controller: 'subscribeCtrl'
+            })
+    }
+])
 .controller('startCtrl', ['$scope', '$timeout', 'Facebook', '$http', '$state',
 function($scope, $timeout, Facebook, $http, $state) {
     $scope.pseudoToggle = false;
