@@ -111,7 +111,6 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
      * Events
      */
     $rootScope.$on('Facebook:statusChange', function(ev, data) {
-        console.log("Status: ", data);
         if (data.status == 'connected') {
             $rootScope.logged = true;
             $rootScope.FB.me();
