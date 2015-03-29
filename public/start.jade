@@ -14,5 +14,5 @@
             .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
                 .input-group
                     input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
-            span(ng-show="!!user || pseudo")
+            span(ng-show="!!user || pseudo && pseudoToggle")
                 button.btn.btn-default(type='button' ng-click="connect(user?user:pseudo)") Jouer !

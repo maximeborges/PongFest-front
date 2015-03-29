@@ -64,6 +64,18 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 }])
 .controller('selectCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
 function($rootScope, $scope, $timeout, Facebook, $http, $state) {
+
+    $scope.select = function(role) {
+        $http.patch('/api/users/' + $rootScope.user.token, {role: role})
+            .success(function(resp) {
+                $rootScope.user.role = resp.role;
+                $state.go('game');
+            })
+            .error(function(resp) {
+                $state.go('start');
+            });
+    };
+
     $scope.disconnect = function() {
         Facebook.getLoginStatus(function(response) {
             if(response.status === 'connected') {
@@ -78,6 +90,9 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 }])
 .controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     //$scope
+}])
+.controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+
 }])
 .run(['$window', '$rootScope', '$state', 'Facebook', function($window, $rootScope, $state, Facebook) {
     $rootScope.user = null;
