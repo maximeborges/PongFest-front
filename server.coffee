@@ -6,10 +6,14 @@ randtoken = require "rand-token"
 http = require "http"
 express = require "express"
 bodyParser = require 'body-parser'
-app = express()
 
+app = express()
+app.set 'view engine', 'jade'
 app.use express.static(__dirname + '/public')
 app.use bodyParser.json()
+app.use (req, res, next) ->
+  console.log(new Date() + " - " + req.ip + " - " + req.path)
+  next()
 
 mongoose = require 'mongoose'
 mongoose.connect process.env.MONGO_URL || 'mongodb://localhost/shadok-api'
@@ -28,9 +32,9 @@ userSchema = mongoose.Schema
 
 User = mongoose.model("User", userSchema)
 
-app.use (req, res, next) ->
-  console.log(new Date() + " " + req.path)
-  next()
+
+app.get "/", (req, res) ->
+  res.render "index"
 
 # Homepage
 app.post "/api/users", (req, res) ->
@@ -42,7 +46,7 @@ app.post "/api/users", (req, res) ->
   user = new User token: token, name: name
   user.save (err) ->
     console.error("fail to save user" + user + ":" + err) if err
-    res.send user
+    res.send JSON.stringify(user)
 
 app.patch "/api/users/:token", (req, res) ->
   User.find token: req.params.token, (err, users) ->
@@ -65,7 +69,7 @@ app.patch "/api/users/:token", (req, res) ->
         req.status 500
         res.send "internal error"
         return
-      res.send user
+      res.send JSON.stringify(user)
 
 app.get "/api/leaderboard", (req, res) ->
   res.send "leaderboard"
@@ -75,7 +79,7 @@ app.post "/api/score", (req, res) ->
   score = {left: req.body.left, right: req.body.right}
   console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
-    client.send {event: "score", score: score}
+    client.send JSON.stringify({event: "score", score: score})
   res.status 204
   res.send ""
 

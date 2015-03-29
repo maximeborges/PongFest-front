@@ -5,12 +5,10 @@ angular.module('LaserPong', [
     'facebook'
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
-    function($stateProvider, $urlRouterProvider, FacebookProvider) {
-
-    FacebookProvider.init('893554934040564');
+function($stateProvider, $urlRouterProvider, FacebookProvider) {
+    FacebookProvider.init(window.FACEBOOK_APP_ID + "");
 
     $urlRouterProvider.otherwise("/start");
-
     $stateProvider
         .state('start', {
             url: '/start',
@@ -63,15 +61,6 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
             console.log(err)
         })
     };
-
-    // Watch the connection of the user via facebook
-    /*$rootScope.$watch(function() {
-        return $rootScope.user;
-    }, function(newVal, oldVal) {
-        if(!!newVal) {
-            $scope.connect($rootScope.user);
-        }
-    });*/
 }])
 .controller('selectCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
 function($rootScope, $scope, $timeout, Facebook, $http, $state) {
@@ -140,5 +129,3 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         }
     });
 }]);
-
-
