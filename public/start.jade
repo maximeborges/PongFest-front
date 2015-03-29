@@ -19,17 +19,24 @@
                 .col-xs-8.vcenter.text-center
                     h2 vous propose une expérience inédite
             .divider
-            h1.title.text-center Prêts à jouer ?
-
-            div(ng-switch="logged")
-                img.facebook-connect(ng-switch-when="false" src="facebook-connect.png" ng-click="FB.login()")
-                div(ng-switch-when="true")
-                    | connecté en tant que {{user.name}}
-                    a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
-            div(ng-hide="logged")
-                a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle") Ou avec un pseudo
-            .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
-                .input-group
-                    input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
-            span(ng-show="!!user || pseudo && pseudoToggle")
-                button.btn.btn-default(type='button' ng-click="connect(user?user:pseudo)") Jouer !
+            div(ng-hide="here")
+                h1.title.text-center Rendez-vous devant le Shadok !
+                .half-divider
+                button.btn.btn-default.fullwidth(ng-hide="map" ng-click="displayMap()") C'est où ?
+                .half-divider
+                iframe.fullwidth(src="https://www.google.fr/maps/ms?msa=0&msid=202854984831071350059.000460823cd49dd2fabcc&ie=UTF8&ll=48.574265,7.761884&spn=0.005743,0.016512&t=m&z=17&vpsrc=6&iwloc=0004e89c7420011d95636&t=m&z=14&output=embed" width="800" height="350" frameborder="0" style="border:0" ng-show="map")
+                button.btn.btn-primary.btn-lg.fullwidth(ng-click="imHere()")  J'y suis !
+            div(ng-show="here")
+                h1.title.text-center Prêts à jouer ?
+                div(ng-switch="logged")
+                    img.facebook-connect(ng-switch-when="false" src="facebook-connect.png" ng-click="FB.login()")
+                    div(ng-switch-when="true")
+                        | connecté en tant que {{user.name}}
+                        a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
+                div(ng-hide="logged")
+                    a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle") Ou avec un pseudo
+                .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
+                    .input-group
+                        input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
+                span(ng-show="!!user || pseudo && pseudoToggle")
+                    button.btn.btn-default(type='button' ng-click="connect(user?user:pseudo)") Jouer !

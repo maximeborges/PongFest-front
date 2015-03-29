@@ -34,6 +34,20 @@ function($stateProvider, $urlRouterProvider, FacebookProvider) {
 .controller('startCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
 function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $scope.pseudoToggle = false;
+    
+    /**
+     * Display the map 
+     */
+    $scope.displayMap = function() {
+        $rootScope.map = true;
+    };
+    
+    /**
+     * Display the connection options
+     */
+    $scope.imHere = function() {
+        $rootScope.here = true;
+    };
 
     /**
      * Send user infos to the server
@@ -98,6 +112,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $rootScope.user = null;
 
     $rootScope.logged = false;
+    $rootScope.map = false;
+    $rootScope.here = false;
 
     $rootScope.FB = {
         login: function() {
