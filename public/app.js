@@ -40,6 +40,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
      */
     $scope.displayMap = function() {
         $rootScope.map = true;
+        // have to redisplay the map because it was hidden
+        angular.element(document.getElementById('embedded_map')).attr('src', angular.element(document.getElementById('embedded_map')).attr('src'));
     };
     
     /**
@@ -89,7 +91,6 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
                 $state.go('start');
             });
     };
-
     $scope.disconnect = function() {
         Facebook.getLoginStatus(function(response) {
             if(response.status === 'connected') {

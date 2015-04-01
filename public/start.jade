@@ -24,7 +24,7 @@
                 .half-divider
                 button.btn.btn-default.fullwidth(ng-hide="map" ng-click="displayMap()") C'est où ?
                 .half-divider
-                iframe.fullwidth(src="https://www.google.fr/maps/ms?msa=0&msid=202854984831071350059.000460823cd49dd2fabcc&ie=UTF8&ll=48.574265,7.761884&spn=0.005743,0.016512&t=m&z=17&vpsrc=6&iwloc=0004e89c7420011d95636&t=m&z=14&output=embed" width="800" height="350" frameborder="0" style="border:0" ng-show="map")
+                iframe#embedded_map(src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2639.872904332812!2d7.763945000000001!3d48.573983000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4796c903e433caef%3A0xdb2bffb320adce2e!2sLe+Shadok%2C+fabrique+du+num%C3%A9rique!5e0!3m2!1sen!2s!4v1427920609515&z=12&ll=48.573983,7.763934" width="100%" height="450" frameborder="0" style="border:0" ng-show="map")
                 button.btn.btn-primary.btn-lg.fullwidth(ng-click="imHere()")  J'y suis !
             div(ng-show="here")
                 h1.title.text-center Prêts à jouer ?
