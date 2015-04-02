@@ -34,12 +34,13 @@ function($stateProvider, $urlRouterProvider, FacebookProvider) {
 .controller('startCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
 function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $scope.pseudoToggle = false;
+    $scope.map = false;
     
     /**
      * Display the map 
      */
     $scope.displayMap = function() {
-        $rootScope.map = true;
+        $scope.map = true;
         // have to redisplay the map because it was hidden
         angular.element(document.getElementById('embedded_map')).attr('src', angular.element(document.getElementById('embedded_map')).attr('src'));
     };
@@ -119,16 +120,18 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $rootScope.FB = {
         login: function() {
             if(!$rootScope.logged)
-                Facebook.login();
+                Facebook.login(function(user) {
+                    if(user.status == "connected") {
+                        $rootScope.logged = true;
+                        $rootScope.FB.me();
+                    }
+                }, {scope: 'email'});
         },
         logout: function() {
-            if($rootScope.logged)
-                Facebook.logout(function() {
-                    $rootScope.$apply(function() {
-                        $rootScope.user = null;
-                        $rootScope.logged = false;
-                    });
-                });
+            if($rootScope.logged) {
+                $rootScope.user = null;
+                $rootScope.logged = false;
+            }
         },
         me: function() {
             Facebook.api('/me', function(response) {
@@ -144,8 +147,6 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
      */
     $rootScope.$on('Facebook:statusChange', function(ev, data) {
         if (data.status == 'connected') {
-            $rootScope.logged = true;
-            $rootScope.FB.me();
         }
         if (data.status == 'unknown') {
             $rootScope.logged = false;

@@ -9,7 +9,7 @@ img { max-width: 100%; }
 .half-divider { margin-top: 10px; }
 .vline-right { border-right: 1px solid #eee; }
 .vcenter { display: inline-block; vertical-align: middle; float: none; }
-.fullwidth { width: 100%; }
+.fullwidth { width: 100%; }
 .center {
     float: none;
     display: block;
@@ -41,14 +41,14 @@ div.pseudo-form {
 button.red-team {
     border: none;
     background: #E42020;
-    width: 110px;
+    width: 150px;
     height: 35px;
     color: white;
 }
 button.blue-team {
     border: none;
     background: #4159e4;
-    width: 110px;
+    width: 150px;
     height: 35px;
     color: white;
 }

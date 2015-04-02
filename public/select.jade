@@ -5,9 +5,9 @@
             h1.title.text-center Choix de l'équipe
 
             div.select
-                button.red-team(ng-click="select('left')") Équipe rouge
+                button.red-team(ng-click="select('left')") Équipe gauche
                 span.vs VS
-                button.blue-team(ng-click="select('right')") Équipe bleu
+                button.blue-team(ng-click="select('right')") Équipe droite
             div
                 | Connecté en tant que {{user.name}}
                 a(ng-click="disconnect()" href="javascript:") Deconnexion
