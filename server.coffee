@@ -2,7 +2,6 @@
 # Entrypoint of the service
 #
 
-WebSocketServer = require("websocket").server
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
@@ -14,6 +13,8 @@ UserHelper = require "./helper/user"
 app = express()
 app.set 'view engine', 'jade'
 app.use express.static(__dirname + '/public')
+require('express-ws')(app)
+
 app.use bodyParser.json()
 app.use (req, res, next) ->
   console.log(new Date() + " - " + req.ip + " - " + req.path)
@@ -114,13 +115,8 @@ app.post "/api/score", (req, res) ->
   res.status 204
   res.send ""
 
-server = http.createServer app
-
-wss = new WebSocketServer httpServer: server, path: "/ws"
-wss.on 'request', (request) ->
-  connection = request.accept null, request.origin ->
-    wsClients.push(connection)
-
+app.ws '/ws', (ws, req) ->
+  wsClients.push(ws)
     #
     # Expect
     # {
@@ -129,20 +125,21 @@ wss.on 'request', (request) ->
     #   "input": "<up or down>"
     # }
     #
-    connection.on 'message', (message) ->
-      event = JSON.parse(message)
-      if event.type == "input"
-        if event.input == "up"
-          up += 1
-        else if event.input == "down"
-          down += 1
-        else
-          console.error("invalid input, event: " + JSON.stringify(event))
+  ws.on 'message', (message) ->
+    event = JSON.parse(message)
+    if event.type == "input"
+      if event.input == "up"
+        up += 1
+      else if event.input == "down"
+        down += 1
+      else
+        console.error("invalid input, event: " + JSON.stringify(event))
 
-    connection.on 'close', (connection) ->
-      console.log(connection)
+  ws.on 'close', (ws) ->
+    console.log(ws)
 
-server.listen process.env.PORT || 3000, () ->
+  
+server = app.listen process.env.PORT || 3000, () ->
   host = server.address().address
   port = server.address().port
   console.log 'App listening at http://%s:%s', host, port

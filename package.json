@@ -15,7 +15,6 @@
     "express-ws": "^0.2.6",
     "jade": "^1.9.2",
     "mongoose": "^4.0.0",
-    "rand-token": "^0.2.1",
-    "websocket": "^1.0.18"
+    "rand-token": "^0.2.1"
   }
 }
