@@ -2,7 +2,8 @@
 
 angular.module('LaserPong', [
     'ui.router',
-    'facebook'
+    'facebook',
+    'ngWebsocket'
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
 function($stateProvider, $urlRouterProvider, FacebookProvider) {
@@ -108,9 +109,11 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     //$scope
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+    $scope.up = function() {
 
+    }
 }])
-.run(['$window', '$rootScope', '$state', 'Facebook', function($window, $rootScope, $state, Facebook) {
+.run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
     $rootScope.user = null;
 
     $rootScope.logged = false;
