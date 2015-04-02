@@ -114,6 +114,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     }
 }])
 .run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
+    //var ws = $websocket.$new('ws://localhost:3000/ws');
+
     $rootScope.user = null;
 
     $rootScope.logged = false;
