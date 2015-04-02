@@ -8,6 +8,9 @@ http = require "http"
 express = require "express"
 bodyParser = require 'body-parser'
 
+User = require "./models/user"
+UserHelper = require "./helper/user"
+
 app = express()
 app.set 'view engine', 'jade'
 app.use express.static(__dirname + '/public')
@@ -25,13 +28,6 @@ db.once 'open', (callback) ->
   console.log "connection to database opened"
 
 wsClients = []
-
-userSchema = mongoose.Schema
-  name: String
-  token: String
-  role: String
-
-User = mongoose.model("User", userSchema)
 
 # Homepage
 app.get "/", (req, res) ->
@@ -82,24 +78,20 @@ app.post "/api/users", (req, res) ->
 #   "role": "<role>",
 # }
 app.patch "/api/users/:token", (req, res) ->
-  User.find token: req.params.token, (err, users) ->
-    if err
-      console.error(err)
-      req.status 500
+  UserHelper.find req.params.token, (error) ->
+    console.error(error)
+    if error.type == "internal"
+      res.status 500
       res.send "internal error"
-      return
-
-    if users.length == 0
-      req.status 404
+    else if error.type == "not found"
+      res.status 404
       res.send "not found"
-      return
-
-    user = users[0]
+  , (user) ->
     user.role = req.body.role
     user.save (err) ->
       if err
         console.error("fail to update user" + user + ":" + err)
-        req.status 500
+        res.status 500
         res.send "internal error"
         return
       res.send JSON.stringify(user)
@@ -123,13 +115,8 @@ app.post "/api/score", (req, res) ->
   res.send ""
 
 server = http.createServer app
-server.listen process.env.PORT || 3000, () ->
-  host = server.address().address
-  port = server.address().port
-  console.log 'App listening at http://%s:%s', host, port
 
 wss = new WebSocketServer httpServer: server, path: "/ws"
-
 wss.on 'request', (request) ->
   connection = request.accept null, request.origin ->
     wsClients.push(connection)
@@ -154,3 +141,9 @@ wss.on 'request', (request) ->
 
     connection.on 'close', (connection) ->
       console.log(connection)
+
+server.listen process.env.PORT || 3000, () ->
+  host = server.address().address
+  port = server.address().port
+  console.log 'App listening at http://%s:%s', host, port
+
