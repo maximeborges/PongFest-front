@@ -1,3 +1,4 @@
+#
 # Entrypoint of the service
 #
 
@@ -32,11 +33,25 @@ userSchema = mongoose.Schema
 
 User = mongoose.model("User", userSchema)
 
-
+# Homepage
 app.get "/", (req, res) ->
   res.render "index"
 
-# Homepage
+# Create a new user
+# {
+#    "id": "<id facebook, generated if null>",
+#    "firstName": "<first name, given by facebook API>",
+#    "lastName": "<last name, given by facebook API>"
+#    "name": "<username if facebook not used>"
+# }
+#
+# Ths ID is used as token (it completely unsecured but ok for this hacking session)
+#
+# Returns
+# {
+#   "token": "<id facebook or generated token>",
+#   "name": "<user name>"
+# }
 app.post "/api/users", (req, res) ->
   token = req.body.id
   if !token
@@ -45,9 +60,27 @@ app.post "/api/users", (req, res) ->
   name = req.body.name || req.body.firstName + " " + req.body.lastName
   user = new User token: token, name: name
   user.save (err) ->
-    console.error("fail to save user" + user + ":" + err) if err
-    res.send JSON.stringify(user)
+    if err
+      console.error("fail to save user" + user + ":" + err)
+      res.status 500
+      res.send "something wrong happened"
+    else
+      res.send JSON.stringify(user)
 
+# Patch a user
+#
+# Used to select the team
+#
+# Expect
+# {
+#   "role": "<left or right>"
+# }
+# Returns
+# {
+#   "token": "<id facebook or generated token>",
+#   "name": "<user name>",
+#   "role": "<role>",
+# }
 app.patch "/api/users/:token", (req, res) ->
   User.find token: req.params.token, (err, users) ->
     if err
@@ -71,13 +104,19 @@ app.patch "/api/users/:token", (req, res) ->
         return
       res.send JSON.stringify(user)
 
+# TODO
 app.get "/api/leaderboard", (req, res) ->
   res.send "leaderboard"
 
-# From laser server
+# From laser game
+#
+# Expect
+# {
+#   "left": <int>,
+#   "right": <int>
+# }
 app.post "/api/score", (req, res) ->
   score = {left: req.body.left, right: req.body.right}
-  console.log("GOT A SCORE ! " + JSON.stringify(score))
   wsClients.forEach (client) ->
     client.send JSON.stringify({event: "score", score: score})
   res.status 204
@@ -94,9 +133,17 @@ wss = new WebSocketServer httpServer: server, path: "/ws"
 wss.on 'request', (request) ->
   connection = request.accept null, request.origin ->
     wsClients.push(connection)
+
+    #
+    # Expect
+    # {
+    #   "type": "input",
+    #   "token": "<user token for auth>"
+    #   "input": "<up or down>"
+    # }
+    #
     connection.on 'message', (message) ->
       event = JSON.parse(message)
-      console.log(event)
       if event.type == "input"
         if event.input == "up"
           up += 1
