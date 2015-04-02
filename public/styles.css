@@ -1,28 +1,64 @@
+/* General */
 body { background: #162741; color: #fff; font-size: 18px; }
 .container { max-width: 720px; margin-bottom: 30px;}
-#logo { max-width: 100%;  margin: auto; display: block; margin-top: 30px; }
-.title { color: white; width: 100%; }
-#form-subscribe label { color: #eee; }
-#form-subscribe  input[type=submit] { margin-top: 5px; }
 img { max-width: 100%; }
 .divider { margin-top: 25px; }
 .half-divider { margin-top: 10px; }
 .vline-right { border-right: 1px solid #eee; }
 .vcenter { display: inline-block; vertical-align: middle; float: none; }
 .fullwidth { width: 100%; }
+
+/* Header */
+#logo { max-width: 100%;  margin: auto; display: block; margin-top: 30px; }
+.title { color: white; width: 100%; }
+#form-subscribe label { color: #eee; }
+#form-subscribe  input[type=submit] { margin-top: 5px; }
+
+/* Btn social (fb connect...) */
+.btn-social {
+    position: relative;
+    padding-left: 44px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.btn-social.btn-lg {
+    padding-left: 61px;
+    margin-bottom: 6px;
+}
+.btn-social:hover {
+    color: #ddd;
+}
+.btn-social i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    line-height: 34px;
+    font-size: 1.6em;
+    text-align: center;
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+.btn-social.btn-lg i {
+    line-height: 45px;
+    width: 45px;
+    font-size: 1.8em;
+}
+.btn-facebook {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+}
+
 .center {
     float: none;
     display: block;
     margin: 0 auto;
 }
+
 /*  START  */
-img.facebook-connect {
-    display: block;
-    margin: 20px auto;
-    width: 41%;
-    max-width: 200px;
-    cursor: pointer;
-}
 a.pseudo-toggle {
     text-align: center;
     display: block;

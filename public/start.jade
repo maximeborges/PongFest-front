@@ -29,14 +29,15 @@
             div(ng-show="here")
                 h1.title.text-center Prêts à jouer ?
                 div(ng-switch="logged")
-                    img.facebook-connect(ng-switch-when="false" src="facebook-connect.png" ng-click="FB.login()")
+                    a.btn.btn-lg.btn-block.btn-social.btn-facebook.facebook-connect(ng-switch-when="false" ng-click="FB.login()")
+                        i.fa.fa-facebook
+                        | Continuer avec Facebook
                     div(ng-switch-when="true")
                         | connecté en tant que {{user.name}}
                         a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
                 div(ng-hide="logged")
-                    a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle") Ou avec un pseudo
-                .col-xs-6.col-sm-4.pseudo-form(ng-show="pseudoToggle")
-                    .input-group
-                        input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
+                    a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle" ng-hide="pseudoToggle") Ou avec un pseudo
+                .pseudo-form.fullwidth(ng-show="pseudoToggle")
+                    input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
                 span(ng-show="logged || pseudo && pseudoToggle")
-                    button.btn.btn-default(type='button' ng-click="connect(user?user:pseudo)") Jouer !
+                    button.btn.btn-default.form-control(type='button' ng-click="connect(user?user:pseudo)") Jouer !
