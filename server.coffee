@@ -126,14 +126,7 @@ app.ws '/ws', (ws, req) ->
     # }
     #
   ws.on 'message', (message) ->
-    event = JSON.parse(message)
-    if event.type == "input"
-      if event.input == "up"
-        up += 1
-      else if event.input == "down"
-        down += 1
-      else
-        console.error("invalid input, event: " + JSON.stringify(event))
+    UserHelper.wsMessage(message)
 
   ws.on 'close', (ws) ->
     console.log(ws)
