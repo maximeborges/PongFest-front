@@ -26,6 +26,8 @@
                 .half-divider
                 iframe#embedded_map(ng-show="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2639.872904332812!2d7.763945000000001!3d48.573983000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4796c903e433caef%3A0xdb2bffb320adce2e!2sLe+Shadok%2C+fabrique+du+num%C3%A9rique!5e0!3m2!1sen!2s!4v1427920609515&z=12&ll=48.573983,7.763934" width="100%" height="450" frameborder="0" style="border:0")
                 button.btn.btn-primary.btn-lg.fullwidth(ng-click="imHere()")  J'y suis !
+                .half-divider
+                a.btn.btn-default.fullwidth(href ui-sref="subscribe")  Plus d'informations sur Alsace Digitale
             div(ng-show="here")
                 h1.title.text-center Prêts à jouer ?
                 div(ng-switch="logged")
@@ -33,7 +35,7 @@
                         i.fa.fa-facebook
                         | Continuer avec Facebook
                     div(ng-switch-when="true")
-                        | connecté en tant que {{user.name}}
+                        | Connecté en tant que {{user.name}}
                         a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
                 div(ng-hide="logged")
                     a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle" ng-hide="pseudoToggle") Ou avec un pseudo
