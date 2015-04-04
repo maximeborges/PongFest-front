@@ -19,31 +19,36 @@ GameHelper = {
     else
       console.error("Role unknown")
   sendDirection: ->
-    keysbinLeft = 0
-    keysbinRight = 0
-    if global.tabLeft.up > global.tabLeft.down
-      keysbinLeft += 16
+    if global.tabLeft.up == 0 and global.tabLeft.down == 0
+      keysbinLeft = 0
     else
-      keysbinLeft += 32
-    if global.tabRight.up > global.tabRight.down
-      keysbinRight += 16
+      if global.tabLeft.up > global.tabLeft.down 
+        keysbinLeft = 32
+      else
+        keysbinLeft = 16
+    if global.tabRight.up == 0 and global.tabRight.down == 0
+      keysbinRight = 0
     else
-      keysbinRight += 32
+      if global.tabRight.up > global.tabRight.down
+        keysbinRight = 32
+      else
+        keysbinRight = 16
     global.tabLeft.up = 0
     global.tabLeft.down = 0
     global.tabRight.up = 0
     global.tabRight.down = 0
 
-    message = new Buffer(3)
-    message.write('I', 0, 1, 'ascii')
-    message.writeUInt8(keysbinLeft, 1)
-    message.writeUInt8(keysbinRight, 2)
-    console.log(JSON.stringify(message))
+    message = new Buffer(4)
+    message.writeUInt8(255, 0)
+    message.write('I', 1, 2, 'ascii')
+    message.writeUInt8(keysbinLeft, 2)
+    message.writeUInt8(keysbinRight, 3)
+
     client = dgram.createSocket("udp4")
-    client.send(message, 0, message.length, 4242, "localhost")
+    client.send(message, 0, message.length, 4242, process.env.LASER_URL || 'localhost')
     
 }
 
-setInterval(GameHelper.sendDirection, 1000)
+setInterval(GameHelper.sendDirection, 500)
 
 module.exports = GameHelper
