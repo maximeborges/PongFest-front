@@ -80,7 +80,7 @@ app.get "/api/leaderboard", (req, res) ->
 app.post "/api/score", (req, res) ->
   score = {left: req.body.left, right: req.body.right}
   wsClients.forEach (client) ->
-    client.send JSON.stringify({event: "score", score: score})
+    client.send JSON.stringify({event: "score", data: score})
   res.status 204
   res.send ""
 
