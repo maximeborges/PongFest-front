@@ -1,1 +1,1 @@
-<div class="container"><div class="row"><div class="col-md-12"><button ng-click="sendInput('up')" class="up">↑</button><button ng-click="sendInput('down')" class="down">↓</button></div></div></div>
+<div class="container"><div class="row"><div class="col-md-12"><span>Vous jouez à {{user.role=='left'?'gauche':'droite'}}</span><button ng-click="sendInput('up')" class="up">↑</button><button ng-click="sendInput('down')" class="down">↓</button><div id="left" class="score">Gauche: {{leftScore}}</div><div id="right" class="score">Droite: {{rightScore}}</div></div></div></div>

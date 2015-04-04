@@ -86,6 +86,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+    $scope.rightScore = $scope.leftScore = 0;
+
     $scope.sendInput = function(dir) {
         $rootScope.ws.$emit('message', {
             "type": "input",
@@ -93,6 +95,11 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
             "input": dir
         })
     };
+
+    $rootScope.ws.$on('score', function(data) {
+        $scope.leftScore = data.left;
+        $scope.rightScore = data.right;
+    })
 }])
 .run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
     $rootScope.ws = $websocket.$new("ws://"+$window.location.host+"/ws");
