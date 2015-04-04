@@ -99,6 +99,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $rootScope.ws.$on('score', function(data) {
         $scope.leftScore = data.left;
         $scope.rightScore = data.right;
+        $scope.$apply();
     })
 }])
 .run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
