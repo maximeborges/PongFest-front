@@ -98,8 +98,8 @@ app.ws '/ws', (ws, req) ->
     UserHelper.wsMessage(message)
 
   ws.on 'close', (ws) ->
-    console.log(ws)
-
+    # Remove disconnected user
+    wsClients.splice(wsClients.indexOf(ws), 1)
   
 server = app.listen process.env.PORT || 3000, () ->
   host = server.address().address
