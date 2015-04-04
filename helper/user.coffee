@@ -1,6 +1,8 @@
 User = require "../models/user"
 GameHelper = require "./game"
 
+global.role = left: 0, right: 0
+
 UserHelper = {
   find: (token, errorCallback, callback) ->
     User.find token: token, (err, users) ->
@@ -29,6 +31,13 @@ UserHelper = {
         UserHelper.direction(user, event.input)
       else
         console.error("Type unknown")
+  giveRole: ->
+    if global.role.left > global.role.right
+      global.role.right++
+      return "right"
+    else
+      global.role.left++
+      return "left"
 }
 
 module.exports = UserHelper

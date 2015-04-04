@@ -47,7 +47,8 @@ app.get "/", (req, res) ->
 # Returns
 # {
 #   "token": "<id facebook or generated token>",
-#   "name": "<user name>"
+#   "name": "<user name>",
+#   "role": "<role>"
 # }
 app.post "/api/users", (req, res) ->
   token = req.body.id
@@ -55,46 +56,14 @@ app.post "/api/users", (req, res) ->
     token = randtoken.generate(16)
 
   name = req.body.name || req.body.firstName + " " + req.body.lastName
-  user = new User token: token, name: name
+  role = UserHelper.giveRole()
+  user = new User token: token, name: name, role: role
   user.save (err) ->
     if err
       console.error("fail to save user" + user + ":" + err)
       res.status 500
       res.send "something wrong happened"
     else
-      res.send JSON.stringify(user)
-
-# Patch a user
-#
-# Used to select the team
-#
-# Expect
-# {
-#   "role": "<left or right>"
-# }
-# Returns
-# {
-#   "token": "<id facebook or generated token>",
-#   "name": "<user name>",
-#   "role": "<role>",
-# }
-app.patch "/api/users/:token", (req, res) ->
-  UserHelper.find req.params.token, (error) ->
-    console.error(error)
-    if error.type == "internal"
-      res.status 500
-      res.send "internal error"
-    else if error.type == "not found"
-      res.status 404
-      res.send "not found"
-  , (user) ->
-    user.role = req.body.role
-    user.save (err) ->
-      if err
-        console.error("fail to update user" + user + ":" + err)
-        res.status 500
-        res.send "internal error"
-        return
       res.send JSON.stringify(user)
 
 # TODO
