@@ -35,7 +35,7 @@
                         i.fa.fa-facebook
                         | Continuer avec Facebook
                     div(ng-switch-when="true")
-                        | Connecté en tant que {{user.name}}
+                        | Connecté en tant que {{user.name}} -
                         a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
                 div(ng-hide="logged")
                     a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle" ng-hide="pseudoToggle") Ou avec un pseudo
