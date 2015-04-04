@@ -3,6 +3,7 @@
 angular.module('LaserPong', [
     'ui.router',
     'facebook',
+    'mailchimp',
     'ngWebsocket'
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
@@ -106,7 +107,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     };
 }])
 .controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
-    //$scope
+    
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     $scope.up = function() {
@@ -160,7 +161,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 
     // States
     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-        if(!$rootScope.user && toState.name != 'start') {
+        if(!$rootScope.user && toState.name != 'start' && toState.name != 'subscribe') {
             e.preventDefault();
             $state.go('start');
         }
