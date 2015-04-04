@@ -23,7 +23,7 @@ UserHelper = {
     #todo: mettre un score à l'utilisateur
 
   wsMessage: (message) ->
-    event = JSON.parse(message)
+    event = JSON.parse(message).data
     @find event.token, (error) ->
       console.error(error)
     , (user) ->
