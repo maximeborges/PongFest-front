@@ -41,8 +41,8 @@ GameHelper = {
     message = new Buffer(4)
     message.writeUInt8(255, 0)
     message.write('I', 1, 2, 'ascii')
-    message.writeUInt8(keysbinLeft, 2)
-    message.writeUInt8(keysbinRight, 3)
+    message.writeUInt8(keysbinRight, 2)
+    message.writeUInt8(keysbinLeft, 3)
 
     client = dgram.createSocket("udp4")
     client.send(message, 0, message.length, 4242, process.env.LASER_URL || 'localhost')
