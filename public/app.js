@@ -73,49 +73,29 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
             $rootScope.user = {
                 id: resp._id,
                 token: resp.token,
-                name: resp.name
+                name: resp.name,
+                role: resp.role
             };
-            $state.go('select');
+            $state.go('game');
         }).error(function(err) {
             console.log(err)
         })
-    };
-}])
-.controller('selectCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
-function($rootScope, $scope, $timeout, Facebook, $http, $state) {
-
-    $scope.select = function(role) {
-        $http.patch('/api/users/' + $rootScope.user.token, {role: role})
-            .success(function(resp) {
-                $rootScope.user.role = resp.role;
-                $state.go('game');
-            })
-            .error(function(resp) {
-                $state.go('start');
-            });
-    };
-    $scope.disconnect = function() {
-        Facebook.getLoginStatus(function(response) {
-            if(response.status === 'connected') {
-                FB.logout();
-            } else {
-                $rootScope.user = null;
-                $rootScope.logged = false;
-            }
-            $state.go('start');
-        });
     };
 }])
 .controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
-    $scope.up = function() {
-
-    }
+    $scope.sendInput = function(dir) {
+        $rootScope.ws.$emit('message', {
+            "type": "input",
+            "token": $rootScope.user.token,
+            "input": dir
+        })
+    };
 }])
 .run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
-    //var ws = $websocket.$new('ws://localhost:3000/ws');
+    $rootScope.ws = $websocket.$new("ws://"+$window.location.host+"/ws");
 
     $rootScope.user = null;
 
@@ -134,10 +114,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
                 }, {scope: 'email'});
         },
         logout: function() {
-            if($rootScope.logged) {
-                $rootScope.user = null;
-                $rootScope.logged = false;
-            }
+            $rootScope.user = null;
+            $rootScope.logged = false;
         },
         me: function() {
             Facebook.api('/me', function(response) {
