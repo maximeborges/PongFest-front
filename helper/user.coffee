@@ -13,9 +13,9 @@ UserHelper = {
 
   direction: (user, input) ->
     if input == 'up'
-      GameHelper.up()
+      GameHelper.up(user.role)
     else if input == 'down'
-      GameHelper.down()
+      GameHelper.down(user.role)
     else
       console.error('Input unknown')
     #todo: mettre un score à l'utilisateur
