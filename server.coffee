@@ -29,6 +29,7 @@ db.once 'open', (callback) ->
   console.log "connection to database opened"
 
 wsClients = []
+score = {left: 0, right: 0}
 
 # Homepage
 app.get "/", (req, res) ->
@@ -86,6 +87,7 @@ app.post "/api/score", (req, res) ->
 
 app.ws '/ws', (ws, req) ->
   wsClients.push(ws)
+  ws.send JSON.stringify({event: "score", data: score})
     #
     # Expect
     # {

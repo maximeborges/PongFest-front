@@ -85,26 +85,26 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 .controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     
 }])
-.controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+.controller('gameCtrl', ['$rootScope', '$scope', '$window', '$websocket', function($rootScope, $scope, $window, $websocket) {
+    var ws = $websocket.$new("ws://"+$window.location.host+"/ws");
+
     $scope.rightScore = $scope.leftScore = 0;
 
     $scope.sendInput = function(dir) {
-        $rootScope.ws.$emit('message', {
+        ws.$emit('message', {
             "type": "input",
             "token": $rootScope.user.token,
             "input": dir
         })
     };
 
-    $rootScope.ws.$on('score', function(data) {
+    ws.$on('score', function(data) {
         $scope.leftScore = data.left;
         $scope.rightScore = data.right;
         $scope.$apply();
     })
 }])
-.run(['$window', '$rootScope', '$state','$websocket', 'Facebook', function($window, $rootScope, $state, $websocket, Facebook) {
-    $rootScope.ws = $websocket.$new("ws://"+$window.location.host+"/ws");
-
+.run(['$rootScope', '$state', 'Facebook', function($rootScope, $state, Facebook) {
     $rootScope.user = null;
 
     $rootScope.logged = false;
