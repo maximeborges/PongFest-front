@@ -1,8 +1,13 @@
 .container
     .row
         .col-md-12
-            span Vous jouez à {{user.role=='left'?'gauche':'droite'}}
-            button.up(ng-click="sendInput('up')") ↑
-            button.down(ng-click="sendInput('down')") ↓
-            .score#left Gauche: {{leftScore}}
-            .score#right Droite: {{rightScore}}
+            .divider
+            .score.pull-left#left Gauche: {{leftScore}}
+            .score.pull-right#right Droite: {{rightScore}}
+            .clearfix
+            .divider
+            .divider
+            //span Vous jouez à {{user.role=='left'?'gauche':'droite'}}
+            button.btn.up(ng-click="sendInput('up')" class="{{user.role}}") ↑
+            button.btn.down(ng-click="sendInput('down')" class="{{user.role}}") ↓
+            

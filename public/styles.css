@@ -92,3 +92,40 @@ span.vs {
     margin: 15px;
     color: white;
 }
+
+/* GAME */
+.score#left, .score#right {
+    font-size: 30px;
+    line-height: 50px;
+    width: 30%;
+    text-align: center;
+}
+.score#left {
+    background: #12befa;
+}
+.score#right {
+    background: #71E850;
+}
+button.up, button.down {
+    width: 50%;
+    height: 150px;
+    font-size: 100px;
+    color: black;
+    display: block;
+    margin: auto;
+    border-radius: 0;
+    margin-top: 5px;    
+    transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    opacity: 0.6;
+}
+button.up.left, button.down.left {
+    background: #12befa;
+}
+button.up.right, button.down.right {
+    background: #71E850;
+}
+button.up:active, button.down:active {
+    opacity: 1;
+}
