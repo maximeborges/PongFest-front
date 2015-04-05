@@ -2,8 +2,8 @@
 body { background: #162741; color: #fff; font-size: 18px; }
 .container { max-width: 720px; margin-bottom: 30px;}
 img { max-width: 100%; }
-.divider { margin-top: 25px; }
-.half-divider { margin-top: 10px; }
+.divider { height: 25px; }
+.half-divider { height: 10px; }
 .vline-right { border-right: 1px solid #eee; }
 .vcenter { display: inline-block; vertical-align: middle; float: none; }
 .fullwidth { width: 100%; }
@@ -97,7 +97,7 @@ span.vs {
 .score#left, .score#right {
     font-size: 30px;
     line-height: 50px;
-    width: 30%;
+    min-width: 30%;
     text-align: center;
 }
 .score#left {
