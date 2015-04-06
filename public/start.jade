@@ -34,8 +34,8 @@
                     a.btn.btn-lg.btn-block.btn-social.btn-facebook.facebook-connect(ng-switch-when="false" ng-click="FB.login()")
                         i.fa.fa-facebook
                         | Continuer avec Facebook
-                    div(ng-switch-when="true")
-                        | Connecté en tant que {{user.name}} -
+                    div.text-center(ng-switch-when="true")
+                        | Connecté en tant que {{user.name}} -&nbsp;
                         a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
                 div(ng-hide="logged")
                     a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle" ng-hide="pseudoToggle") Ou avec un pseudo

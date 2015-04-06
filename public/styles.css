@@ -95,6 +95,7 @@ span.vs {
 
 /* GAME */
 .score#left, .score#right {
+    padding: 0 10px;
     font-size: 30px;
     line-height: 50px;
     min-width: 30%;
