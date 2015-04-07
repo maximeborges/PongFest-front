@@ -45,7 +45,7 @@ GameHelper = {
     message.writeUInt8(keysbinLeft, 3)
 
     client = dgram.createSocket("udp4")
-    client.send(message, 0, message.length, 4242, process.env.LASER_URL || 'localhost')
+    client.send(message, 0, message.length, parseInt(process.env.LASER_PORT) || 4242, process.env.LASER_URL || 'localhost')
     
 }
 
