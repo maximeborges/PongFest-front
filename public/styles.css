@@ -129,4 +129,5 @@ button.up.right, button.down.right {
 }
 button.up:active, button.down:active {
     opacity: 1;
+    border: 10px solid #eee;
 }

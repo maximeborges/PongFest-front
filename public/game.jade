@@ -2,12 +2,13 @@
     .row
         .col-md-12
             .divider
-            .score.pull-left#left Gauche: {{leftScore}}
-            .score.pull-right#right Droite: {{rightScore}}
+            .score.pull-left#left G: {{leftScore}}
+            .score.pull-right#right D: {{rightScore}}
             .clearfix
             .divider
             .divider
-            //span Vous jouez à {{user.role=='left'?'gauche':'droite'}}
+            .text-center 
+                p Vous jouez à {{user.role=='left'?'gauche':'droite'}}
             button.btn.up(ng-click="sendInput('up')" class="{{user.role}}") ↑
             button.btn.down(ng-click="sendInput('down')" class="{{user.role}}") ↓
             
