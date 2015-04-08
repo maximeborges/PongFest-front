@@ -125,6 +125,10 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $scope.$apply();
     });
 
+    $rootScope.ws.$on('ping', function(data) {
+        console.log("websocket ping - " + new Date(data.ts))
+    });
+
     // User
     $rootScope.user = null;
 

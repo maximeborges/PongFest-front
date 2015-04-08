@@ -88,6 +88,11 @@ app.post "/api/score", (req, res) ->
 app.ws '/ws', (ws, req) ->
   wsClients.push(ws)
   ws.send JSON.stringify({event: "score", data: score})
+
+  # ping every 20 secs
+  pingIntervalId = setInterval () ->
+    ws.send JSON.stringify({event: "ping", data: {ts: new Date().getTime()}})
+  , parseInt(process.env.WS_PING_DELAY) || 20000
     #
     # Expect
     # {
@@ -101,10 +106,10 @@ app.ws '/ws', (ws, req) ->
 
   ws.on 'close', (ws) ->
     # Remove disconnected user
+    clearInterval pingIntervalId
     wsClients.splice(wsClients.indexOf(ws), 1)
   
 server = app.listen process.env.PORT || 3000, () ->
   host = server.address().address
   port = server.address().port
   console.log 'App listening at http://%s:%s', host, port
-
