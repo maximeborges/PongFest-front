@@ -43,7 +43,8 @@ function($stateProvider, $urlRouterProvider, FacebookProvider) {
 function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $scope.pseudoToggle = false;
     $scope.map = false;
-    
+    $scope.here = false;
+
     /**
      * Display the map 
      */
@@ -57,7 +58,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
      * Display the connection options
      */
     $scope.imHere = function() {
-        $rootScope.here = true;
+        $scope.here = true;
     };
 
     /**
@@ -90,36 +91,44 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     };
 }])
 .controller('leaderBoardCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
-    $scope.doughnutData = [10, 12];
-    $scope.doughnutLabels = ['Gauche', 'Droite'];
+    $scope.doughnutData = [120, 80];
+    $scope.doughnutLabels = ['Droite', 'Gauche'];
+    $scope.doughnutColours = ['#CC1700', '#41CC00'];
 }])
-.controller('gameCtrl', ['$rootScope', '$scope', '$window', '$websocket', function($rootScope, $scope, $window, $websocket) {
-    var ws = $websocket.$new("ws://"+$window.location.host+"/ws");
-
-    $scope.rightScore = $scope.leftScore = 0;
-
+.controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     $scope.sendInput = function(dir) {
-        ws.$emit('message', {
+        $rootScope.ws.$emit('message', {
             "type": "input",
             "token": $rootScope.user.token,
             "input": dir
         })
     };
-
-    ws.$on('score', function(data) {
-        $scope.leftScore = data.left;
-        $scope.rightScore = data.right;
-        $scope.$apply();
-    })
 }])
-.run(['$rootScope', '$state', 'Facebook', function($rootScope, $state, Facebook) {
-    $rootScope.user = null;
+.run(['$rootScope', '$state', 'Facebook', '$window', '$websocket', function($rootScope, $state, Facebook, $window, $websocket) {
     //debug
     $rootScope.$state = $state;
 
+    // WEBSOCKET
+    $rootScope.ws = $rootScope.ws = $websocket.$new("ws://"+$window.location.host+"/ws");
+    $rootScope.gameStatus = {
+        left: {
+            score: 0,
+            players: 0
+        },
+        right: {
+            score: 0,
+            players: 0
+        }};
+    $rootScope.ws.$on('score', function(data) {
+        $rootScope.gameStatus.left = data.left;
+        $rootScope.gameStatus.right = data.right;
+        $scope.$apply();
+    });
+
+    // User
+    $rootScope.user = null;
+
     $rootScope.logged = false;
-    $rootScope.map = false;
-    $rootScope.here = false;
 
     $rootScope.FB = {
         login: function() {
@@ -144,9 +153,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         }
     };
 
-    /**
-     * Events
-     */
+    // Events
     $rootScope.$on('Facebook:statusChange', function(ev, data) {
         if (data.status == 'connected') {
         }
