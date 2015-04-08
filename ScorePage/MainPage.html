@@ -21,7 +21,7 @@
 </head>
 <body>
   <div class="container">
-    <img id="logo" src="Assets/logo-AD-circular.png">
+    <img id="logo" src="Assets/logo_alsace_digitale.png">
     <!--  col-md-4 .col-md-offset-4-->
     <div class="row">
       <h1 id="title" class="title">Tableau des scores</h1>
@@ -36,14 +36,43 @@
         <h3 class="score">15</h3>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-offset-5">
-        <div id="canvas-holder">
-          <canvas id="chart-area" width="500" height="500"/>
+    <div class="row row-centered">
+      <div class="panel panel-success col-md-4">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Bienveillant</h2></div>
+        <div class="panel-body">
+          <p>Joueur ayant le plus aidé leur équipe</p>
         </div>
+        <ul class="list-group">
+          <li class="list-group-item">Alain terieur<span class="badge">1</span></li>
+          <li class="list-group-item">Alain terieur<span class="badge">2</span></li>
+          <li class="list-group-item">Alain terieur<span class="badge">3</span></li>
+          <li class="list-group-item">Alain terieur<span class="badge">4</span></li>
+          <li class="list-group-item">Alain terieur<span class="badge">5</span></li>
+        </ul>
+      </div>
+      <div class="col-centered col-md-2" id="canvas-holder">
+        <canvas id="chart-area"/>
+      </div>
+
+      <div class="panel panel-danger col-md-4">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><h2>Anarchiste</h2></div>
+        <div class="panel-body">
+          <p>Joueur ayant fait perdre leur équipe</p>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">Alex terieur<span class="badge">1</span></li>
+          <li class="list-group-item">Alex terieur<span class="badge">2</span></li>
+          <li class="list-group-item">Alex terieur<span class="badge">3</span></li>
+          <li class="list-group-item">Alex terieur<span class="badge">4</span></li> 
+          <li class="list-group-item">Alex terieur<span class="badge">5</span></li>
+        </ul>
       </div>
     </div>
-  </div>
+
+
+
   <script>
     var doughnutData = [
         {
@@ -69,7 +98,7 @@
         window.myDoughnut.segments[0].value = Math.floor(Math.random()*150); //Set new data for anarchiste here
         window.myDoughnut.segments[1].value = Math.floor(Math.random()*150); //Set new data for bienveillant here
           window.myDoughnut.update();
-      }, 5000);
+      }, 155555000);
   </script>
 </body>
 </html>
