@@ -62,7 +62,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         if(typeof user === "object")
             infos = {
                 id: user.id,
-                name: user.first_name + ' ' + user.last_name
+                firstName: user.first_name,
+                lastName: user.last_name
             };
         else {
             infos = {name: user};
@@ -82,7 +83,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         })
     };
 }])
-.controller('subscribeCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
+.controller('leaderBoardCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', '$window', '$websocket', function($rootScope, $scope, $window, $websocket) {
