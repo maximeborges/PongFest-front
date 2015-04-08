@@ -8,6 +8,7 @@
     "angular-facebook": "~0.2.3",
     "angular-ui-router": "~0.2.13",
     "ng-websocket": "~0.2.1",
-    "angular-mailchimp": "*"
+    "angular-mailchimp": "*",
+    "angular-chart.js": "~0.6.0"
   }
 }

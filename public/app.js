@@ -4,7 +4,8 @@ angular.module('LaserPong', [
     'ui.router',
     'facebook',
     'mailchimp',
-    'ngWebsocket'
+    'ngWebsocket',
+    'chart.js'
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
 function($stateProvider, $urlRouterProvider, FacebookProvider) {
@@ -31,6 +32,11 @@ function($stateProvider, $urlRouterProvider, FacebookProvider) {
             url: '/subscribe',
             templateUrl: 'subscribe.html',
             controller: 'subscribeCtrl'
+        })
+        .state('leaderboard', {
+            url: '/leaderboard',
+            templateUrl: 'leaderboard.html',
+            controller: 'leaderBoardCtrl'
         })
 }])
 .controller('startCtrl', ['$rootScope', '$scope', '$timeout', 'Facebook', '$http', '$state',
@@ -84,7 +90,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     };
 }])
 .controller('leaderBoardCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
-    
+    $scope.doughnutData = [10, 12];
+    $scope.doughnutLabels = ['Gauche', 'Droite'];
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', '$window', '$websocket', function($rootScope, $scope, $window, $websocket) {
     var ws = $websocket.$new("ws://"+$window.location.host+"/ws");
@@ -107,6 +114,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 }])
 .run(['$rootScope', '$state', 'Facebook', function($rootScope, $state, Facebook) {
     $rootScope.user = null;
+    //debug
+    $rootScope.$state = $state;
 
     $rootScope.logged = false;
     $rootScope.map = false;

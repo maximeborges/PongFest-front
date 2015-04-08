@@ -1,0 +1,16 @@
+.container
+    .row
+        img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
+    .row
+        h1#title.title Tableau des scores
+    .row
+        .col-md-6
+            h2.title Equipe Bleu
+            h3.score 10
+        .col-md-6
+            h2.title Equipe Rouge
+            h3.score 15
+    .row
+        .col-md-offset-5
+            #canvas-holder
+                canvas#doughnut.chart.chart-doughnut(data="doughnutData" labels="doughnutLabels" width='500', height='500')
