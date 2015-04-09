@@ -43,6 +43,16 @@ app.get "/", (req, res) ->
 app.get "/api/leaderboard", (req, res) ->
   res.send "leaderboard"
 
+app.get "/api/top100", (req, res) ->
+  User
+    .find {"score":{$exists:true}}
+    .sort {"score":-1}
+    .limit(100)
+    .exec (err, users) ->
+      res.status 200
+      res.json users
+
+
 # From laser game
 #
 # Expect
