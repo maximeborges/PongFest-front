@@ -1,33 +1,40 @@
-.container
+.container#leaderboard
     .row
-        img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
+        a(href="http://www.alsacedigitale.org/" target="_blank")
+            img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
     .row
-        h1#title.title Tableau des scores
-    .row
-        .col-md-6
-            h2.title.text-center Equipe Bleu
-            h3.score {{gameStatus.left.score}}
-        .col-md-6
-            h2.title.text-center Equipe Rouge
-            h3.score {{gameStatus.right.score}}
+        h1.title Tableau des scores
+    .row.scores
+        .col-md-6.col-xs-6
+            h2.title Gauche: {{gameStatus.left.players}} joueurs
+            h1.score {{gameStatus.left.score}}
+        .col-md-6.col-xs-6.text-right
+            h2.title Droite: {{gameStatus.right.players}} joueurs
+            h1.score {{gameStatus.right.score}}
 
-    .row.row-centered
-        .panel.panel-success.col-md-4
+    .row
+        h1.title Statistiques des joueurs
+        h3.text-center Joueurs connectés: {{gameStatus.left.players + gameStatus.right.players}}
+    .row
+        .panel.panel-success.col-md-5.col-xs-5
             .panel-heading
                 h2.text-center Bienveillant
             .panel-body
                 p Joueur ayant le plus aidé leur équipe
             ul.list-group
-                li.list-group-item(ng-repeat="user in goodUsers")
-                    | {{user.name}}
-                    span.badge {{$index}}
-        #canvas-holder.col-centered.col-md-2
+                li.list-group-item(ng-repeat="user in goodPlayers track by $index")
+                    | {{user}}
+                    span.badge {{$index+1}}
+        #canvas-holder.col-md-2.col-xs-2
             canvas#doughnut.chart.chart-doughnut(data="doughnutData" labels="doughnutLabels" colours="doughnutColours" width='500', height='500')
-        .panel.panel-danger.col-md-4
+        .panel.panel-danger.col-md-5.col-xs-5
             .panel-heading
                 h2.text-center Anarchiste
             .panel-body
                 p Joueur ayant fait perdre leur équipe
             ul.list-group
-                li.list-group-item(ng-repeat="user in badUsers")
-                    | {{user.name}}
+                li.list-group-item.text-right(ng-repeat="user in badPlayers track by $index")
+                    | {{user}}
+                    span.badge.pull-left {{$index+1}}
+        h3.text-center Joueurs Total:
+        h2.text-center {{gameStatus.totalPlayers}}

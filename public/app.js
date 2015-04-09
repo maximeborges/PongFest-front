@@ -65,7 +65,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
      * Send user infos to the server
      */
     $scope.connect = function(user) {
-        var infos = {};
+        var infos;
         if(typeof user === "object")
             infos = {
                 id: user.id,
@@ -75,30 +75,45 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         else {
             infos = {name: user};
         }
-
-        $http.post('/api/users', infos
-        ).success(function(resp) {
-            $rootScope.user = {
-                id: resp._id,
-                token: resp.token,
-                name: resp.name,
-                role: resp.role
-            };
-            $state.go('game');
-        }).error(function(err) {
-            console.log(err)
-        })
+        $rootScope.ws.$emit('createUser', infos);
     };
 }])
 .controller('leaderBoardCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     $scope.doughnutData = [120, 80];
-    $scope.doughnutLabels = ['Droite', 'Gauche'];
+    $scope.doughnutLabels = ['', ''];
     $scope.doughnutColours = ['#CC1700', '#41CC00'];
+
+    $scope.goodPlayers = [
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre'
+    ];
+    $scope.badPlayers = [
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre',
+        'Jean Némarre'
+    ];
+}])
+.controller('subscribeCtrl', [function() {
+
 }])
 .controller('gameCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
     $scope.sendInput = function(dir) {
-        $rootScope.ws.$emit('message', {
-            "type": "input",
+        $rootScope.ws.$emit('input', {
             "token": $rootScope.user.token,
             "input": dir
         })
@@ -118,13 +133,34 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         right: {
             score: 0,
             players: 0
-        }};
-    $rootScope.ws.$on('score', function(data) {
-        $rootScope.gameStatus.left = data.left;
-        $rootScope.gameStatus.right = data.right;
-        $scope.$apply();
-    });
+        },
+        totalPlayers: 0
+    };
 
+    $rootScope.ws.$on('user', function(data) {
+        if(data._id) {
+            $rootScope.user = {
+                id: data._id,
+                token: data.token,
+                name: data.name,
+                role: data.role
+            };
+            $state.go('game');
+        }
+        else console.log(data)
+    });
+    $rootScope.ws.$on('players', function(data) {
+        console.log(data)
+        $rootScope.gameStatus.left.players = data.left|0;
+        $rootScope.gameStatus.right.players = data.right|0;
+        $rootScope.gameStatus.totalPlayers = data.total|0;
+        $rootScope.$apply();
+    });
+    $rootScope.ws.$on('score', function(data) {
+        $rootScope.gameStatus.left.score = data.left|0;
+        $rootScope.gameStatus.right.score = data.right|0;
+        $rootScope.$apply();
+    });
     $rootScope.ws.$on('ping', function(data) {
         console.log("websocket ping - " + new Date(data.ts))
     });
@@ -168,7 +204,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 
     // States
     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-        if(!$rootScope.user && toState.name != 'start' && toState.name != 'subscribe') {
+        if(!$rootScope.user && toState.name != 'start' && toState.name != 'subscribe' && toState.name != "leaderboard") {
             e.preventDefault();
             $state.go('start');
         }

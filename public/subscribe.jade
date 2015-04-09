@@ -1,31 +1,32 @@
 .container(ng-controller='subscribeCtrl')
-  .row
-    .col-md-12
-      img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
-      h1.title.text-center Tenez-vous informés de nos prochains événements !
-      form(name='MailchimpSubscriptionForm', ng-controller='MailchimpSubscriptionCtrl')
-          div(ng-hide="mailchimp.result === 'success'")
-            input.hidden(type='hidden', ng-model='mailchimp.username', ng-init="mailchimp.username='laplagedigitale'")
-            input.hidden(type='hidden', ng-model='mailchimp.dc', ng-init="mailchimp.dc='us5'")
-            input.hidden(type='hidden', ng-model='mailchimp.u', ng-init="mailchimp.u='d0f86161d0d69c890bbf3755a'")
-            input.hidden(type='hidden', ng-model='mailchimp.id', ng-init="mailchimp.id='f26e2c043e'")
-            .form-group
-              label(for='lastname') Nom
-              input#lastname.form-control(type='text', name='lname', ng-model='mailchimp.LNAME', placeholder='Tapez votre nom')
-            .form-group
-              label(for='firstname') Prénom
-              input#firstname.form-control(type='text', name='fname', ng-model='mailchimp.FNAME', placeholder='Tapez votre prénom')
-            .form-group
-              label(for='email') Addresse Email
-              input#email.form-control(type='email', name='email', ng-model='mailchimp.EMAIL', placeholder='Tapez votre addresse email', required='')
-            button.btn.btn-lg.btn-primary.fullwidth(ng-disabled='MailchimpSubscriptionForm.$invalid', ng-click='addSubscription(mailchimp)') Valider
-          // Show error message if MailChimp unsuccessfully added the email to the list.
-          div(ng-show="mailchimp.result === 'error'", ng-cloak='')
-            span(ng-bind-html='mailchimp.errorMessage')
-          // Show success message if MailChimp returned successfully.
-          div(ng-show="mailchimp.result === 'success'", ng-cloak='')
-            span(ng-bind-html='mailchimp.successMessage')
     .row
-    .col-md-12
-        .divider  
-        button.btn.btn-default.fullwidth(href ui-sref='start') Retour au jeu
+        .col-md-12
+            a(href="http://www.alsacedigitale.org/")
+                img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
+            h1.title.text-center Tenez-vous informés de nos prochains événements !
+            form(name='MailchimpSubscriptionForm', ng-controller='MailchimpSubscriptionCtrl')
+                div(ng-hide="mailchimp.result === 'success'")
+                    input.hidden(type='hidden', ng-model='mailchimp.username', ng-init="mailchimp.username='laplagedigitale'")
+                    input.hidden(type='hidden', ng-model='mailchimp.dc', ng-init="mailchimp.dc='us5'")
+                    input.hidden(type='hidden', ng-model='mailchimp.u', ng-init="mailchimp.u='d0f86161d0d69c890bbf3755a'")
+                    input.hidden(type='hidden', ng-model='mailchimp.id', ng-init="mailchimp.id='f26e2c043e'")
+                    .form-group
+                        label(for='lastname') Nom
+                        input#lastname.form-control(type='text', name='lname', ng-model='mailchimp.LNAME', placeholder='Tapez votre nom')
+                    .form-group
+                        label(for='firstname') Prénom
+                        input#firstname.form-control(type='text', name='fname', ng-model='mailchimp.FNAME', placeholder='Tapez votre prénom')
+                    .form-group
+                        label(for='email') Addresse Email
+                        input#email.form-control(type='email', name='email', ng-model='mailchimp.EMAIL', placeholder='Tapez votre addresse email', required='')
+                    button.btn.btn-lg.btn-primary.fullwidth(ng-disabled='MailchimpSubscriptionForm.$invalid', ng-click='addSubscription(mailchimp)') Valider
+                // Show error message if MailChimp unsuccessfully added the email to the list.
+                div(ng-show="mailchimp.result === 'error'", ng-cloak='')
+                    span(ng-bind-html='mailchimp.errorMessage')
+                // Show success message if MailChimp returned successfully.
+                div(ng-show="mailchimp.result === 'success'", ng-cloak='')
+                    span(ng-bind-html='mailchimp.successMessage')
+        .row
+        .col-md-12
+            .divider
+            button.btn.btn-default.fullwidth(href ui-sref='start') Retour au jeu

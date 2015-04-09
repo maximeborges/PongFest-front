@@ -44,15 +44,6 @@ UserHelper = {
         res.status 500
         res.send "something wrong happened"
 
-  wsMessage: (message) ->
-    event = JSON.parse(message).data
-    @find event.token, (error) ->
-      console.error(error)
-    , (user) ->
-      if event.type == "input"
-        UserHelper.direction(user, event.input)
-      else
-        console.error("Type unknown")
   giveRole: ->
     if global.role.left > global.role.right
       global.role.right++

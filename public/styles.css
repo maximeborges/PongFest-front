@@ -131,3 +131,19 @@ button.up:active, button.down:active {
     opacity: 1;
     border: 15px solid #eee;
 }
+
+/* LEADERBOARD*/
+#leaderboard .title {
+    margin-bottom: 18px;
+}
+#leaderboard p {
+    color: black;
+}
+#leaderboard .list-group {
+    color: black;
+}
+#leaderboard .scores {
+    border-bottom: 1px solid #C5C5C5;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}

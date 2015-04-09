@@ -1,7 +1,8 @@
 .container
     .row
         .col-md-12
-            img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
+            a(href="http://www.alsacedigitale.org/" target="_blank")
+                img#logo(src='logo_alsace_digitale.png', alt='Logo Alsace Digitale')
             .divider
             .row
                 .col-xs-6.vline-right.vcenter
@@ -11,7 +12,8 @@
                     p
                         a(href="http://www.shadok.strasbourg.eu/" target="_blank")  Visiter le site du Shadok
                 .col-xs-6.vcenter
-                    img(src="logo_shadok.png" alt="Logo Shadok")
+                    a(href="http://www.shadok.strasbourg.eu/" target="_blank")
+                        img(src="logo_shadok.png" alt="Logo Shadok")
             .divider
             .row
                 .col-xs-4.vcenter
@@ -39,7 +41,7 @@
                         a.logout(ng-click="FB.logout()" href="javascript:") Déconnexion
                 div(ng-hide="logged")
                     a.pseudo-toggle(ng-click="pseudoToggle=!pseudoToggle" ng-hide="pseudoToggle") Ou avec un pseudo
-                .pseudo-form.fullwidth(ng-show="pseudoToggle")
+                .pseudo-form.fullwidth(ng-show="pseudoToggle && !logged")
                     input.form-control(type='text', placeholder='Pseudo' ng-model="pseudo")
                 span(ng-show="logged || pseudo && pseudoToggle")
                     button.btn.btn-default.form-control(type='button' ng-click="connect(user?user:pseudo)") Jouer !

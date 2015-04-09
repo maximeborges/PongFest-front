@@ -1,7 +1,6 @@
 #
 # Entrypoint of the service
 #
-
 randtoken = require "rand-token"
 http = require "http"
 express = require "express"
@@ -30,45 +29,15 @@ db.on 'error', console.error.bind(console, 'connection error:')
 db.once 'open', (callback) ->
   console.log "connection to database opened"
 
+totalPlayers = 0
 wsClients = []
 score = {left: 0, right: 0}
+global.role.left = 0
+global.role.right = 0
 
 # Homepage
 app.get "/", (req, res) ->
   res.render "index"
-
-# Create a new user
-# {
-#    "id": "<id facebook, generated if null>",
-#    "firstName": "<first name, given by facebook API>",
-#    "lastName": "<last name, given by facebook API>"
-#    "name": "<username if facebook not used>"
-# }
-#
-# Ths ID is used as token (it completely unsecured but ok for this hacking session)
-#
-# Returns
-# {
-#   "token": "<id facebook or generated token>",
-#   "name": "<user name>",
-#   "role": "<role>"
-# }
-app.post "/api/users", (req, res) ->
-  token = req.body.id
-  if !token
-    token = randtoken.generate(16)
-
-  name = req.body.name || req.body.firstName + " " + req.body.lastName
-  role = UserHelper.giveRole()
-  score = 0
-  user = new User token: token, name: name, role: role, score: score
-  user.save (err) ->
-    if err
-      console.error("fail to save user" + user + ":" + err)
-      res.status 500
-      res.send "something wrong happened"
-    else
-      res.send JSON.stringify(user)
 
 # TODO
 app.get "/api/leaderboard", (req, res) ->
@@ -113,30 +82,88 @@ app.post "/api/racket", (req, res) ->
 app.post "/api/fictif", (req, res) ->
   global.fictif = req.body
 
+
+
 app.ws '/ws', (ws, req) ->
   wsClients.push(ws)
+  userToken = null
   ws.send JSON.stringify({event: "score", data: score})
+  ws.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
 
-  # ping every 20 secs
+  # ping every 15 secs
   pingIntervalId = setInterval () ->
     ws.send JSON.stringify({event: "ping", data: {ts: new Date().getTime()}})
-  , parseInt(process.env.WS_PING_DELAY) || 20000
-    #
-    # Expect
-    # {
-    #   "type": "input",
-    #   "token": "<user token for auth>"
-    #   "input": "<up or down>"
-    # }
-    #
+  , parseInt(process.env.WS_PING_DELAY) || 15000
+
   ws.on 'message', (message) ->
-    UserHelper.wsMessage(message)
+    message = JSON.parse message
+    event = message.event
+    data = message.data
+
+    if event == 'createUser'
+      #
+      # Expect
+      # {
+      #    "id": "<id facebook, generated if null>",
+      #    "firstName": "<first name, given by facebook API>",
+      #    "lastName": "<last name, given by facebook API>"
+      #    "name": "<username if facebook not used>"
+      # }
+      #
+      token = data.id
+      if !token
+        token = randtoken.generate(16)
+      userToken = token
+
+      name = data.name || data.firstName + " " + data.lastName
+      role = UserHelper.giveRole()
+      user = new User token: token, name: name, role: role, score: 0
+      user.save (err) ->
+        if err
+          console.error("fail to save user" + user + ":" + err)
+          ws.send JSON.stringify({event: 'user', data: err})
+        else
+          totalPlayers++
+          ws.send JSON.stringify({event: 'user', data: user})
+          wsClients.forEach (client) ->
+            if client.readyState == 1
+              client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+    else
+      UserHelper.find data.token
+      , (error) ->
+          console.error(error)
+      , (user) ->
+        if event == "input"
+          #
+          # Expect
+          # {
+          #   "token": "<user token for auth>"
+          #   "input": "<up or down>"
+          # }
+          #
+          UserHelper.direction(user, data.input)
+        else
+          console.error("Unknown message")
 
   ws.on 'close', (ws) ->
     # Remove disconnected user
-    clearInterval pingIntervalId
     wsClients.splice(wsClients.indexOf(ws), 1)
-  
+    clearInterval pingIntervalId
+
+    UserHelper.find userToken
+    , (err) ->
+      console.log(err)
+    , (user) ->
+      console.log('disconnection from '+ user.role)
+      if user.role == 'left'
+        global.role.left--
+      else
+        global.role.right--
+      wsClients.forEach (client) ->
+        if client.readyState == 1 # Websocket opened
+          client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+
+
 server = app.listen process.env.PORT || 3000, () ->
   host = server.address().address
   port = server.address().port

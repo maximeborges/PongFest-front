@@ -2,8 +2,10 @@
     .row
         .col-md-12
             .divider
-            .score.pull-left#left G: {{leftScore}}
-            .score.pull-right#right D: {{rightScore}}
+            .score.pull-left#left Gauche: {{gameStatus.left.score}}
+            .score.pull-right#right Droite: {{gameStatus.right.score}}
+            .pull-left {{gameStatus.left.players}} joueurs
+            .pull-right {{gameStatus.right.players}} joueurs
             .clearfix
             .divider
             .divider
