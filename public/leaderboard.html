@@ -1,1 +1,109 @@
-<div id="leaderboard" class="container"><div class="row"><a href="http://www.alsacedigitale.org/" target="_blank"><img id="logo" src="logo_alsace_digitale.png" alt="Logo Alsace Digitale"/></a></div><div class="row"><h1 class="title">Tableau des scores</h1></div><div class="row scores"><div class="col-md-6 col-xs-6"><h2 class="title">Gauche: {{gameStatus.left.players}} joueurs</h2><h1 class="score">{{gameStatus.left.score}}</h1></div><div class="col-md-6 col-xs-6 text-right"><h2 class="title">Droite: {{gameStatus.right.players}} joueurs</h2><h1 class="score">{{gameStatus.right.score}}</h1></div></div><div class="row"><h1 class="title">Statistiques des joueurs</h1><h3 class="text-center">Joueurs connectés: {{gameStatus.left.players + gameStatus.right.players}}</h3></div><div class="row"><div class="panel panel-success col-md-5 col-xs-5"><div class="panel-heading"><h2 class="text-center">Bienveillant</h2></div><div class="panel-body"><p>Joueur ayant le plus aidé leur équipe</p></div><ul class="list-group"><li ng-repeat="user in goodPlayers track by $index" class="list-group-item">{{user}}<span class="badge">{{$index+1}}</span></li></ul></div><div id="canvas-holder" class="col-md-2 col-xs-2"><canvas id="doughnut" data="doughnutData" labels="doughnutLabels" colours="doughnutColours" width="500" height="500" class="chart chart-doughnut"></canvas></div><div class="panel panel-danger col-md-5 col-xs-5"><div class="panel-heading"><h2 class="text-center">Anarchiste</h2></div><div class="panel-body"><p>Joueur ayant fait perdre leur équipe</p></div><ul class="list-group"><li ng-repeat="user in badPlayers track by $index" class="list-group-item text-right">{{user}}<span class="badge pull-left">{{$index+1}}</span></li></ul></div><h3 class="text-center">Joueurs Total:</h3><h2 class="text-center">{{gameStatus.totalPlayers}}</h2></div></div>
+<script type="text/javascript">
+    WebFontConfig = {
+        google: { families: [ 'Open+Sans:400,300,600,700,800:latin' ] }
+    };
+    (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })();
+</script>
+
+<div id="leaderboard" class="">
+    <div class="left_score">{{gameStatus.left.score}}</div>
+    <div class="left_players">
+        <strong>{{gameStatus.left.players}}</strong> joueur<span ng-if="gameStatus.left.players > 1">s</span>
+    </div>
+
+    <div class="right_score">{{gameStatus.right.score}}</div>
+    <div class="right_players">
+        <strong>{{gameStatus.right.players}}</strong> joueur<span ng-if="gameStatus.left.players > 1">s</span>
+    </div>
+
+
+    <!--<div class="messages_box">-->
+        <!--<p class="title">En direct <strong>live !</strong></p>-->
+        <!--<ul class="messages">-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+        <!--</ul>-->
+    <!--</div>    -->
+    <!---->
+    <!--<div class="messages_box">-->
+        <!--<p class="title">En direct <strong>live !</strong></p>-->
+        <!--<ul class="messages">-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+            <!--<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+    <!---->
+    <div class="messages_box">
+        <p class="title">Top 5 des joueurs <strong>Bienveillants !</strong></p>
+        <ul class="messages">
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+        </ul>
+    </div>
+
+    <iframe class="twitch" src="http://www.twitch.tv/yanjost/embed" frameborder="0" scrolling="no" height="378" width="620"></iframe>
+</div>
+
+<!-- OLD -->
+<!--<div class="row">-->
+<!--<a href="http://www.alsacedigitale.org/" target="_blank"><img id="logo" src="logo_alsace_digitale.png" alt="Logo Alsace Digitale" /></a>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<h1 class="title">Tableau des scores</h1></div>-->
+<!--<div class="row scores">-->
+<!--<div class="col-md-6 col-xs-6">-->
+<!--<h2 class="title">Gauche: {{gameStatus.left.players}} joueurs</h2>-->
+<!--<h1 class="score">{{gameStatus.left.score}}</h1></div>-->
+<!--<div class="col-md-6 col-xs-6 text-right">-->
+<!--<h2 class="title">Droite: {{gameStatus.right.players}} joueurs</h2>-->
+<!--<h1 class="score">{{gameStatus.right.score}}</h1></div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<h1 class="title">Statistiques des joueurs</h1>-->
+<!--<h3 class="text-center">Joueurs connectés: {{gameStatus.left.players + gameStatus.right.players}}</h3></div>-->
+<!--<div class="row">-->
+<!--<div class="panel panel-success col-md-5 col-xs-5">-->
+<!--<div class="panel-heading">-->
+<!--<h2 class="text-center">Bienveillant</h2></div>-->
+<!--<div class="panel-body">-->
+<!--<p>Joueur ayant le plus aidé leur équipe</p>-->
+<!--</div>-->
+<!--<ul class="list-group">-->
+<!--<li ng-repeat="user in goodPlayers track by $index" class="list-group-item">{{user}}<span class="badge">{{$index+1}}</span></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--<div id="canvas-holder" class="col-md-2 col-xs-2">-->
+<!--<canvas id="doughnut" data="doughnutData" labels="doughnutLabels" colours="doughnutColours" width="500" height="500" class="chart chart-doughnut"></canvas>-->
+<!--</div>-->
+<!--<div class="panel panel-danger col-md-5 col-xs-5">-->
+<!--<div class="panel-heading">-->
+<!--<h2 class="text-center">Anarchiste</h2></div>-->
+<!--<div class="panel-body">-->
+<!--<p>Joueur ayant fait perdre leur équipe</p>-->
+<!--</div>-->
+<!--<ul class="list-group">-->
+<!--<li ng-repeat="user in badPlayers track by $index" class="list-group-item text-right">{{user}}<span class="badge pull-left">{{$index+1}}</span></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--<h3 class="text-center">Joueurs Total:</h3>-->
+<!--<h2 class="text-center">{{gameStatus.totalPlayers}}</h2></div>-->
