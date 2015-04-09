@@ -161,6 +161,9 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $rootScope.gameStatus.right.score = data.right|0;
         $rootScope.$apply();
     });
+    $rootScope.ws.$on('notification', function(data) {
+        console.log("received notification: " + data.message)
+    });
     $rootScope.ws.$on('ping', function(data) {
         console.log("websocket ping - " + new Date(data.ts))
     });

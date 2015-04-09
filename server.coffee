@@ -124,6 +124,7 @@ app.ws '/ws', (ws, req) ->
           ws.send JSON.stringify({event: 'user', data: err})
         else
           totalPlayers++
+          ws.send JSON.stringify({event: "notification", data: {user: user, type: 'connect'}})
           ws.send JSON.stringify({event: 'user', data: user})
           wsClients.forEach (client) ->
             if client.readyState == 1
@@ -155,6 +156,7 @@ app.ws '/ws', (ws, req) ->
       console.log(err)
     , (user) ->
       console.log('disconnection from '+ user.role)
+      ws.send JSON.stringify({event: "notification", data: {user: user, type: 'disconnect'}})
       if user.role == 'left'
         global.role.left--
       else
