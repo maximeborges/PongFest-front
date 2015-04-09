@@ -148,15 +148,15 @@ button.up:active, button.down:active {
     /*padding-bottom: 10px;*/
 /*}*/
 
-#leaderboard {
+#leaderboard .leaderboard-content {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 1280px;
+    height: 800px;
+    margin: auto;
     background: url('/fake_bg.png');
     background-position: center center;
     font-family: 'Open Sans', sans-serif;
 }
-
 #leaderboard .left_score, #leaderboard .right_score  {
     position: absolute;
     top: 210px;
@@ -183,27 +183,43 @@ button.up:active, button.down:active {
 
 #leaderboard .twitch {
     position: absolute;
-    bottom: 35px;
-    left: 55px;
+    bottom: 32px;
+    left: 53px;
 }
 
 #leaderboard .messages_box {
     position: absolute;
     right: 60px;
-    bottom: 178px;
+    bottom: 129px;
     width: 500px;
-    height: 222px;
+    height: 280px;
     overflow: hidden;
     padding: 12px;
+    /*background: red;*/
+}
+
+#leaderboard .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#leaderboard .box-carousel {
+    width: 100%;
+    height: 100%;
 }
 
 #leaderboard .messages {
     list-style: none;
     font-size: 15px;
     line-height: 22px;
-    padding-left: 10px;
+    padding-left: 20px;
     margin: 0;
+    color: white;
 }
+
+#leaderboard .messages .green, #leaderboard .messages .green { font-weight: 800; }
+#leaderboard .messages .green { color : #04a7d1; }
+#leaderboard .messages .blue{ color : #73c92d; }
 
 #leaderboard .messages_box .title {
     text-transform: uppercase;
@@ -213,3 +229,11 @@ button.up:active, button.down:active {
 
 #leaderboard .messages_box .title strong{ color: #fd4237; }
 
+
+.rn-carousel-control.rn-carousel-control-next {
+    right: 0;
+}
+
+.rn-carousel-control.rn-carousel-control-prev {
+    left: 0;
+}

@@ -5,6 +5,7 @@ angular.module('LaserPong', [
     'facebook',
     'mailchimp',
     'ngWebsocket',
+    'angular-carousel',
     'chart.js'
 ])
 .config(['$stateProvider', '$urlRouterProvider', 'FacebookProvider',
@@ -107,6 +108,8 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         'Jean Némarre',
         'Jean Némarre'
     ];
+
+    $scope.carousel_duration = 5; //seconds
 }])
 .controller('subscribeCtrl', [function() {
 
