@@ -52,6 +52,15 @@ app.get "/api/top100", (req, res) ->
       res.status 200
       res.json users
 
+app.get "/api/flop100", (req, res) ->
+  User
+    .find {"score":{$exists:true}}
+    .sort {"score":1}
+    .limit(100)
+    .exec (err, users) ->
+      res.status 200
+      res.json users
+
 
 # From laser game
 #
