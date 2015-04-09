@@ -145,7 +145,7 @@ app.ws '/ws', (ws, req) ->
         else
           console.error("Unknown message")
 
-  ws.on 'close', (ws) ->
+  ws.on 'close', (e) ->
     # Remove disconnected user
     wsClients.splice(wsClients.indexOf(ws), 1)
     clearInterval pingIntervalId
