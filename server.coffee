@@ -67,9 +67,15 @@ app.post "/api/score", (req, res) ->
 app.post "/api/racket", (req, res) ->
   if req.body.side == "right"
     global.racket.right = req.body.y
+    res.status 204
+    res.send ""
   else if req.body.side == "left"
     global.racket.left = req.body.y
+    res.status 204
+    res.send ""
   else
+    res.status 400
+    res.send "Side unknown"
     console.error("Side unknown: " + global.racket.side)
   
 # From laser game
@@ -80,7 +86,13 @@ app.post "/api/racket", (req, res) ->
 #   "y": <int>
 # }
 app.post "/api/fictif", (req, res) ->
-  global.fictif = req.body
+  if req.body.side not in ['left', 'right']
+    res.status 400
+    res.send "Side unknown"
+  else
+    global.fictif = req.body
+    res.status 204
+    res.send ""
 
 
 
