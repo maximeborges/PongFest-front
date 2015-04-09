@@ -60,7 +60,8 @@ app.post "/api/users", (req, res) ->
 
   name = req.body.name || req.body.firstName + " " + req.body.lastName
   role = UserHelper.giveRole()
-  user = new User token: token, name: name, role: role
+  score = 0
+  user = new User token: token, name: name, role: role, score: score
   user.save (err) ->
     if err
       console.error("fail to save user" + user + ":" + err)

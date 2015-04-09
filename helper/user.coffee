@@ -16,11 +16,33 @@ UserHelper = {
   direction: (user, input) ->
     if input == 'up'
       GameHelper.up(user.role)
+      if user.role == global.fictif.side
+        if user.role == "right" and global.fictif.y > global.racket.right
+          user.score--
+        else if user.role == "right" and global.fictif.y < global.racket.right
+          user.score++
+        if user.role == "left" and global.fictif.y > global.racket.left
+          user.score--
+        else if user.role == "left" and global.fictif.y < global.racket.left
+          user.score++
     else if input == 'down'
       GameHelper.down(user.role)
+      if user.role == global.fictif.side
+        if user.role == "right" and global.fictif.y < global.racket.right
+          user.score--
+        else if user.role == "right" and global.fictif.y > global.racket.right
+          user.score++
+        if user.role == "left" and global.fictif.y < global.racket.left
+          user.score--
+        else if user.role == "left" and global.fictif.y > global.racket.left
+          user.score++
     else
       console.error('Input unknown')
-    #todo: mettre un score à l'utilisateur
+    user.save (err) ->
+      if err
+        console.error("fail to save user" + user + ":" + err)
+        res.status 500
+        res.send "something wrong happened"
 
   wsMessage: (message) ->
     event = JSON.parse(message).data
