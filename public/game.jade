@@ -11,6 +11,6 @@
             .divider
             .text-center 
                 p Vous jouez à {{user.role=='left'?'gauche':'droite'}}
-            button.btn.up(data-role="button" type="button" ng-click="sendInput('up')" class="{{user.role}}") ↑
-            button.btn.down(data-role="button" type="button" ng-click="sendInput('down')" class="{{user.role}}") ↓
+            button.btn.up(ng-click="sendInput('up')" class="{{user.role}}" ontouchstart="") ↑
+            button.btn.down(ng-click="sendInput('down')" class="{{user.role}}"  ontouchstart="") ↓
             
