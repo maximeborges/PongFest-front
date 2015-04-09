@@ -162,7 +162,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $rootScope.$apply();
     });
     $rootScope.ws.$on('notification', function(data) {
-        console.log("received notification: " + data.message)
+        console.log("received notification " + data.type)
     });
     $rootScope.ws.$on('ping', function(data) {
         console.log("websocket ping - " + new Date(data.ts))
