@@ -10,6 +10,8 @@ bodyParser = require 'body-parser'
 User = require "./models/user"
 UserHelper = require "./helper/user"
 
+GameHelper = require "./helper/game"
+
 app = express()
 app.set 'view engine', 'jade'
 app.use express.static(__dirname + '/public')
@@ -84,6 +86,31 @@ app.post "/api/score", (req, res) ->
     client.send JSON.stringify({event: "score", data: score})
   res.status 204
   res.send ""
+
+# From laser game
+#
+# Expect
+# {
+#   "side":  <left or right>,
+#   "y": <int>
+# }
+app.post "/api/racket", (req, res) ->
+  if req.body.side == "right"
+    global.racket.right = req.body.y
+  else if req.body.side == "left"
+    global.racket.left = req.body.y
+  else
+    console.error("Side unknown: " + global.racket.side)
+  
+# From laser game
+#
+# Expect
+# {
+#   "side": <left or right>,
+#   "y": <int>
+# }
+app.post "/api/fictif", (req, res) ->
+  global.fictif = req.body
 
 app.ws '/ws', (ws, req) ->
   wsClients.push(ws)

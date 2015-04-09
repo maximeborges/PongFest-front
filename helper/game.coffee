@@ -2,6 +2,8 @@ dgram = require 'dgram'
 
 global.tabLeft = up: 0, down: 0
 global.tabRight = up: 0, down: 0
+global.racket = left: 0, right: 0
+global.fictif = side: 0, y: 0
 
 GameHelper = {
   up: (role) ->
