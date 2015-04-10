@@ -14,7 +14,7 @@ UserHelper = {
       callback users[0]
 
   direction: (user, input) ->
-    console.log("user direction " + user);
+    console.log("user direction " + user.name + " " + input);
 
     if !user.score
       user.score=0
@@ -43,7 +43,7 @@ UserHelper = {
           user.score++
     else
       console.error('Input unknown')
-    console.log("user direction before save " + user);
+
     user.save (err) ->
       if err
         console.error("fail to save user" + user + ":" + err)
