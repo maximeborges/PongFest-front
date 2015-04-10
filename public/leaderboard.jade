@@ -1,0 +1,77 @@
+script(type="text/javascript").
+  WebFontConfig = {
+      google: { families: [ 'Open+Sans:400,300,600,700,800:latin' ] }
+  };
+  (function() {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+  })();
+
+script(src="angular-touch.js")
+script(src="angular-carousel.js")
+
+#leaderboard
+  .leaderboard-content
+    .left_score
+      | {{gameStatus.left.score}}
+    .left_players
+      strong
+        | {{gameStatus.left.players}}
+      | &nbsp;joueur
+      span(ng-if="gameStatus.left.players > 1")
+        | s
+
+
+    .right_score
+      | {{gameStatus.right.score}}
+    .right_players
+      strong
+        | {{gameStatus.right.players}}
+      | &nbsp;joueur
+      span(ng-if="gameStatus.left.players > 1")
+        | s
+
+    .messages_box
+      .content
+        ul(rn-carousel="rn-carousel", rn-carousel-auto-slide="carousel_duration", class="box-carousel")
+          li
+            .layer
+              p.title
+                | En direct&nbsp;
+                strong live !
+              ul.messages
+                li(ng-repeat="item in notifications")
+                  strong(ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}")
+                    | {{item.name}}
+                  | {{item.score}}
+          li
+            .layer
+              p.title
+                | Top 10 des joueurs&nbsp;
+                strong Bienveillants !
+              ul.messages
+                li(ng-repeat="item in top100 | limitTo : 10 track by $index")
+                  strong
+                    | {{$index+1}}.
+                  strong(ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}")
+                    | {{item.name}}
+                  | ({{item.score}} pts.)
+          li
+            .layer
+              p.title
+                | Flop 10 des joueurs&nbsp;
+                strong anarchistes !
+              ul.messages
+                li(ng-repeat="item in flop100 | limitTo : 10 track by $index")
+                  strong
+                    | {{$index+1}}.
+                  strong(ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}")
+                    | {{item.name}}
+                  | ({{item.score}} pts.)
+
+    iframe(class="twitch", src="http://www.twitch.tv/yanjost/embed", frameborder="0", scrolling="no", height="378", width="620")
