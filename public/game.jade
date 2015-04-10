@@ -9,7 +9,6 @@
                 span.label DROITE
                 | {{gameStatus.right.score}}
             .clearfix
-            .divider    
     .row.players
         .col-xs-6.text-center 
                 i.fa.fa-users
@@ -19,8 +18,6 @@
                 i.fa.fa-users
                 | &nbsp; {{gameStatus.right.players}} joueur
                 span(ng-if="gameStatus.right.players > 1") s
-        .divider
-        .divider
         .divider
         .text-center 
             p Vous jouez à {{user.role=='left'?'gauche':'droite'}}

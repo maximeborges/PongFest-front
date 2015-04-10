@@ -95,20 +95,19 @@ span.vs {
 
 /* GAME */
 .score#left, .score#right {
-    padding: 0 10px;
-    font-size: 50px;
-    line-height: 50px;
-    width: 45%;
+    font-size: 30px;
+    line-height: 30px;
+    width: 48%;
     text-align: center;
     font-weight: bold;
 }
 .score .label {
-    font-size: 30px;
+    font-size: 25px;
     display: block;
     width: 100%;
     text-align: center;
     font-weight: normal;
-    line-height:40px;
+    line-height:25px;
 }
 .score#left {
     background: #03add9;
@@ -119,12 +118,12 @@ span.vs {
     border-bottom: 10px solid rgb(90, 157, 35);
 }
 .players {
-    font-size: 35px;
+    font-size: 22px;
 }
 button.up, button.down {
     width: 50%;
-    height: 150px;
-    font-size: 80px;
+    height: 130px;
+    font-size: 75px;
     color: white!important;
     display: block;
     margin: auto;
