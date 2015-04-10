@@ -56,10 +56,8 @@ UserHelper = {
 
   giveRole: ->
     if randomNum(10) > 5
-      global.role.right++
       return "right"
     else
-      global.role.left++
       return "left"
 }
 

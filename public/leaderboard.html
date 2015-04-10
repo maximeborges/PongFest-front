@@ -1,72 +1,13 @@
-<script type="text/javascript">
-    WebFontConfig = {
-        google: { families: [ 'Open+Sans:400,300,600,700,800:latin' ] }
-    };
-    (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-    })();
-</script>
-
-
-<script src="angular-touch.js"></script>
-<script src="angular-carousel.js"></script>
-
-<div id="leaderboard" class="">
-    <div class="leaderboard-content">
-        <div class="left_score">{{gameStatus.left.score}}</div>
-        <div class="left_players">
-            <strong>{{gameStatus.left.players}}</strong> joueur<span ng-if="gameStatus.left.players > 1">s</span>
-        </div>
-
-        <div class="right_score">{{gameStatus.right.score}}</div>
-        <div class="right_players">
-            <strong>{{gameStatus.right.players}}</strong> joueur<span ng-if="gameStatus.left.players > 1">s</span>
-        </div>
-
-        <div class="messages_box">
-            <div class="content">
-                <ul rn-carousel rn-carousel-auto-slide="carousel_duration" rn-carousel-duration="400" class="box-carousel">
-                    <li>
-                        <div class="layer">
-                            <p class="title">En direct <strong>live !</strong></p>
-                            <ul class="messages">
-                                <li ng-repeat="item in notifications">
-                                    <strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong> {{item.score}}
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="layer">
-                            <p class="title">Top 10 des joueurs <strong>Bienveillants !</strong></p>
-                            <ul class="messages">
-                                <li ng-repeat="item in top100 | limitTo : 10 track by $index">
-                                    <strong>{{$index+1}}.</strong> <strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong> ({{item.score}} pts.)
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="layer">
-                            <p class="title">Flop 10 des joueurs <strong>anarchistes !</strong></p>
-                            <ul class="messages">
-                                <li ng-repeat="item in flop100 | limitTo : 10 track by $index">
-                                    <strong>{{$index+1}}.</strong> <strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong> ({{item.score}} pts.)
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <iframe class="twitch" src="http://www.twitch.tv/yanjost/embed" frameborder="0" scrolling="no" height="378" width="620"></iframe>
-    </div>
-
-</div>
+<script type="text/javascript">WebFontConfig = {
+    google: { families: [ 'Open+Sans:400,300,600,700,800:latin' ] }
+};
+(function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+})();
+</script><script src="angular-touch.js"></script><script src="angular-carousel.js"></script><div id="leaderboard"><div class="leaderboard-content"><div class="left_score">{{gameStatus.left.score}}</div><div class="left_players"><strong>{{gameStatus.left.players}}</strong>&nbsp;joueur<span ng-if="gameStatus.left.players &gt; 1">s</span></div><div class="right_score">{{gameStatus.right.score}}</div><div class="right_players"><strong>{{gameStatus.right.players}}</strong>&nbsp;joueur<span ng-if="gameStatus.left.players &gt; 1">s</span></div><div class="messages_box"><div class="content"><ul rn-carousel="rn-carousel" rn-carousel-auto-slide="carousel_duration" class="box-carousel"><li><div class="layer"><p class="title">En direct&nbsp;<strong>live !</strong></p><ul class="messages"><li ng-repeat="item in notifications"><strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong>{{item.score}}</li></ul></div></li><li><div class="layer"><p class="title">Top 10 des joueurs&nbsp;<strong>Bienveillants !</strong></p><ul class="messages"><li ng-repeat="item in top100 | limitTo : 10 track by $index"><strong>{{$index+1}}.</strong><strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong>({{item.score}} pts.)</li></ul></div></li><li><div class="layer"><p class="title">Flop 10 des joueurs&nbsp;<strong>anarchistes !</strong></p><ul class="messages"><li ng-repeat="item in flop100 | limitTo : 10 track by $index"><strong>{{$index+1}}.</strong><strong ng-class="{'blue':item.role == 'left', 'green' : item.role == 'right'}">{{item.name}}</strong>({{item.score}} pts.)</li></ul></div></li></ul></div></div><iframe src="http://www.twitch.tv/yanjost/embed" frameborder="0" scrolling="no" height="378" width="620" class="twitch"></iframe></div></div>

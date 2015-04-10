@@ -95,30 +95,43 @@ span.vs {
 
 /* GAME */
 .score#left, .score#right {
-    padding: 0 10px;
-    font-size: 26px;
-    line-height: 50px;
-    min-width: 30%;
+    font-size: 30px;
+    line-height: 30px;
+    width: 48%;
     text-align: center;
+    font-weight: bold;
+}
+.score .label {
+    font-size: 25px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-weight: normal;
+    line-height:25px;
 }
 .score#left {
     background: #03add9;
+    border-bottom: 10px solid rgb(3, 130, 163);
 }
 .score#right {
     background: #73c92d;
+    border-bottom: 10px solid rgb(90, 157, 35);
+}
+.players {
+    font-size: 22px;
 }
 button.up, button.down {
     width: 50%;
-    height: 150px;
-    font-size: 80px;
+    height: 130px;
+    font-size: 75px;
     color: white!important;
     display: block;
     margin: auto;
     border-radius: 0;
     margin-top: 5px;    
-    transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    -webkit-transition: all 0.2s;
+    transition: all 0.05s;
+    -moz-transition: all 0.05s;
+    -webkit-transition: all 0.05s;
     opacity: 1;
 }
 button.up.left, button.down.left {

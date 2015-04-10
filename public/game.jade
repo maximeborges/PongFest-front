@@ -2,17 +2,32 @@
     .row
         .col-md-12
             .divider
-            .score.pull-left#left Gauche: {{gameStatus.left.score}}
-            .score.pull-right#right Droite: {{gameStatus.right.score}}
+            .score.pull-left#left 
+                span.label GAUCHE
+                | {{gameStatus.left.score}}
+            .score.pull-right#right
+                span.label DROITE
+                | {{gameStatus.right.score}}
             .clearfix
-            .col-md-6.text-left {{gameStatus.left.players}} joueur
+    .row.players
+        .col-xs-6.text-center 
+                i.fa.fa-users
+                | &nbsp; {{gameStatus.left.players}} joueur
                 span(ng-if="gameStatus.left.players > 1") s
-            .col-md-6.text-right {{gameStatus.right.players}} joueurs
+        .col-xs-6.text-center 
+                i.fa.fa-users
+                | &nbsp; {{gameStatus.right.players}} joueur
                 span(ng-if="gameStatus.right.players > 1") s
-            .divider
-            .divider
-            .text-center 
-                p Vous jouez à {{user.role=='left'?'gauche':'droite'}}
-            button.btn.up(ng-click="sendInput('up')" class="{{user.role}}" ontouchstart="") ↑
-            button.btn.down(ng-click="sendInput('down')" class="{{user.role}}"  ontouchstart="") ↓
+        .divider
+        .text-center 
+            p Vous jouez à {{user.role=='left'?'gauche':'droite'}}
+        button.btn.up(ng-click="sendInput('up')" class="{{user.role}}" ontouchstart="") ↑
+        button.btn.down(ng-click="sendInput('down')" class="{{user.role}}"  ontouchstart="") ↓
+        .divider
+        a.btn.btn-default.fullwidth(href target="_blank" ui-sref="subscribe")  Plus d'informations sur Alsace Digitale
+        .half-divider
+        a.btn.btn-default.fullwidth(href ui-sref="start")  Retour à l'accueil
+
+
+
             

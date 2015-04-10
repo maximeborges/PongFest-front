@@ -185,6 +185,12 @@ app.ws '/ws', (ws, req) ->
             currentUser.role = role 
             currentUser.save()
             broadcastPlayerInfo(user[0])
+            # updates the number of player in the user's team
+            if user.role == 'left'
+              global.role.left++
+            else
+              global.role.right++
+            broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
       else
@@ -195,12 +201,14 @@ app.ws '/ws', (ws, req) ->
             currentUser=user[0]
             currentUser.role = role 
             currentUser.save()
+            # updates the number of player in the user's team
+            if user.role == 'left'
+              global.role.left++
+            else
+              global.role.right++
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
-
-
-
     else
       UserHelper.find data.token
       , (error) ->
