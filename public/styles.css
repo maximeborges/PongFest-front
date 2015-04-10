@@ -96,16 +96,30 @@ span.vs {
 /* GAME */
 .score#left, .score#right {
     padding: 0 10px;
-    font-size: 26px;
+    font-size: 50px;
     line-height: 50px;
-    min-width: 30%;
+    width: 45%;
     text-align: center;
+    font-weight: bold;
+}
+.score .label {
+    font-size: 30px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-weight: normal;
+    line-height:40px;
 }
 .score#left {
     background: #03add9;
+    border-bottom: 10px solid rgb(3, 130, 163);
 }
 .score#right {
     background: #73c92d;
+    border-bottom: 10px solid rgb(90, 157, 35);
+}
+.players {
+    font-size: 35px;
 }
 button.up, button.down {
     width: 50%;
