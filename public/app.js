@@ -151,7 +151,11 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $rootScope.$apply();
     });
     $rootScope.ws.$on('notification', function(data) {
-        $rootScope.notifications.push({"name": data.user.name, "role": data.user.role, "score": data.type});
+        var messages = {
+            connect : " a rejoins la partie !",
+            disconnect : " a quitté la partie !"
+        }
+        $rootScope.notifications.push({"name": data.user.name, "role": data.user.role, "score": messages[data.type]});
         console.log("received notification " + data.type)
     });
     $rootScope.ws.$on('ping', function(data) {

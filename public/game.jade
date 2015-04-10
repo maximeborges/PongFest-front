@@ -5,8 +5,10 @@
             .score.pull-left#left Gauche: {{gameStatus.left.score}}
             .score.pull-right#right Droite: {{gameStatus.right.score}}
             .clearfix
-            .col-md-6.text-left {{gameStatus.left.players}} joueurs
+            .col-md-6.text-left {{gameStatus.left.players}} joueur
+                span(ng-if="gameStatus.left.players > 1") s
             .col-md-6.text-right {{gameStatus.right.players}} joueurs
+                span(ng-if="gameStatus.left.players > 1") s
             .divider
             .divider
             .text-center 
