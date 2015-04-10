@@ -52,10 +52,8 @@ UserHelper = {
 
   giveRole: ->
     if global.role.left > global.role.right
-      global.role.right++
       return "right"
     else
-      global.role.left++
       return "left"
 }
 

@@ -181,18 +181,26 @@ app.ws '/ws', (ws, req) ->
           if user.length > 0
             console.log 'User '+name+" already exists"
             broadcastPlayerInfo(user[0])
+            # updates the number of player in the user's team
+            if user.role == 'left'
+              global.role.left++
+            else
+              global.role.right++
+            broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
       else
         User.find {"token": token}, (err, user) ->
           if user.length > 0
             console.log 'Facebook user '+name+" already exists"
+            # updates the number of player in the user's team
+            if user.role == 'left'
+              global.role.left++
+            else
+              global.role.right++
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
-
-
-
     else
       UserHelper.find data.token
       , (error) ->
