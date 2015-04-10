@@ -129,9 +129,9 @@ button.up, button.down {
     margin: auto;
     border-radius: 0;
     margin-top: 5px;    
-    transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    -webkit-transition: all 0.2s;
+    transition: all 0.05s;
+    -moz-transition: all 0.05s;
+    -webkit-transition: all 0.05s;
     opacity: 1;
 }
 button.up.left, button.down.left {
