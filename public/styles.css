@@ -96,40 +96,45 @@ span.vs {
 /* GAME */
 .score#left, .score#right {
     padding: 0 10px;
-    font-size: 30px;
+    font-size: 26px;
     line-height: 50px;
     min-width: 30%;
     text-align: center;
 }
 .score#left {
-    background: #12befa;
+    background: #03add9;
 }
 .score#right {
-    background: #71E850;
+    background: #73c92d;
 }
 button.up, button.down {
     width: 50%;
     height: 150px;
-    font-size: 100px;
-    color: black;
+    font-size: 80px;
+    color: white!important;
     display: block;
     margin: auto;
     border-radius: 0;
     margin-top: 5px;    
-    transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    opacity: 0.6;
+    transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    opacity: 1;
 }
 button.up.left, button.down.left {
-    background: #12befa;
+    background: #03add9;
 }
 button.up.right, button.down.right {
-    background: #71E850;
+    background: #73c92d;
+}
+button.up:hover, button.down:hover {
+    color: white!important;
+    opacity: 0.8;
 }
 button.up:active, button.down:active {
-    opacity: 1;
-    border: 15px solid #eee;
+    opacity: 0.6;
+    border: 8px solid #fff;
+    color: white;
 }
 
 /* LEADERBOARD*/

@@ -43,6 +43,25 @@ app.get "/", (req, res) ->
 app.get "/api/leaderboard", (req, res) ->
   res.send "leaderboard"
 
+app.get "/api/top100", (req, res) ->
+  User
+    .find {"score":{$exists:true}}
+    .sort {"score":-1}
+    .limit(100)
+    .exec (err, users) ->
+      res.status 200
+      res.json users
+
+app.get "/api/flop100", (req, res) ->
+  User
+    .find {"score":{$exists:true}}
+    .sort {"score":1}
+    .limit(100)
+    .exec (err, users) ->
+      res.status 200
+      res.json users
+
+
 # From laser game
 #
 # Expect
@@ -67,9 +86,15 @@ app.post "/api/score", (req, res) ->
 app.post "/api/racket", (req, res) ->
   if req.body.side == "right"
     global.racket.right = req.body.y
+    res.status 204
+    res.send ""
   else if req.body.side == "left"
     global.racket.left = req.body.y
+    res.status 204
+    res.send ""
   else
+    res.status 400
+    res.send "Side unknown"
     console.error("Side unknown: " + global.racket.side)
   
 # From laser game
@@ -80,7 +105,13 @@ app.post "/api/racket", (req, res) ->
 #   "y": <int>
 # }
 app.post "/api/fictif", (req, res) ->
-  global.fictif = req.body
+  if req.body.side not in ['left', 'right']
+    res.status 400
+    res.send "Side unknown"
+  else
+    global.fictif = req.body
+    res.status 204
+    res.send ""
 
 
 
@@ -96,6 +127,9 @@ app.ws '/ws', (ws, req) ->
   , parseInt(process.env.WS_PING_DELAY) || 15000
 
   ws.on 'message', (message) ->
+
+    
+
     message = JSON.parse message
     event = message.event
     data = message.data
@@ -111,23 +145,50 @@ app.ws '/ws', (ws, req) ->
       # }
       #
       token = data.id
-      if !token
-        token = randtoken.generate(16)
-      userToken = token
-
       name = data.name || data.firstName + " " + data.lastName
-      role = UserHelper.giveRole()
-      user = new User token: token, name: name, role: role, score: 0
-      user.save (err) ->
-        if err
-          console.error("fail to save user" + user + ":" + err)
-          ws.send JSON.stringify({event: 'user', data: err})
-        else
-          totalPlayers++
-          ws.send JSON.stringify({event: 'user', data: user})
-          wsClients.forEach (client) ->
-            if client.readyState == 1
-              client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+
+      creation = (ws, message, event, data) ->
+        token = data.id
+        name = data.name || data.firstName + " " + data.lastName
+        console.log "Creating a new user "+name
+
+        if !token
+          token = randtoken.generate(16)
+
+        userToken = token
+
+        
+        role = UserHelper.giveRole()
+        user = new User token: token, name: name, role: role, score: 0
+        user.save (err) ->
+          if err
+            console.error("fail to save user" + user + ":" + err)
+            ws.send JSON.stringify({event: 'user', data: err})
+          else
+            totalPlayers++
+            ws.send JSON.stringify({event: 'user', data: user})
+            wsClients.forEach (client) ->
+              if client.readyState == 1
+                client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+                client.send JSON.stringify({event: "notification", data: {user: user, type: 'connect'}})
+
+      if !token
+        User.find {"name": name}, (err, user) ->
+          if user.length > 0
+            console.log 'User '+name+" already exists"
+            ws.send JSON.stringify({event: 'user', data: user[0]})
+          else
+            creation ws, message, event, data
+      else
+        User.find {"token": token}, (err, user) ->
+          if user.length > 0
+            console.log 'Facebook user '+name+" already exists"
+            ws.send JSON.stringify({event: 'user', data: user[0]})
+          else
+            creation ws, message, event, data
+
+
+
     else
       UserHelper.find data.token
       , (error) ->
@@ -162,6 +223,7 @@ app.ws '/ws', (ws, req) ->
       wsClients.forEach (client) ->
         if client.readyState == 1 # Websocket opened
           client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+          client.send JSON.stringify({event: "notification", data: {user: user, type: 'disconnect'}})
 
 
 server = app.listen process.env.PORT || 3000, () ->

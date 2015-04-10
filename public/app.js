@@ -79,35 +79,21 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $rootScope.ws.$emit('createUser', infos);
     };
 }])
-.controller('leaderBoardCtrl', ['$rootScope', '$scope', function($rootScope, $scope) {
-    $scope.doughnutData = [120, 80];
-    $scope.doughnutLabels = ['', ''];
-    $scope.doughnutColours = ['#CC1700', '#41CC00'];
-
-    $scope.goodPlayers = [
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre'
-    ];
-    $scope.badPlayers = [
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre',
-        'Jean Némarre'
-    ];
+.controller('leaderBoardCtrl', ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
+    //$scope.doughnutData = [120, 80];
+    //$scope.doughnutLabels = ['', ''];
+    //$scope.doughnutColours = ['#CC1700', '#41CC00'];
+    //$scope.goodPlayers = [];
+    //$scope.badPlayers = [];
+    $rootScope.notifications = [];
+    $http.get('api/top100').
+    success(function(data, status, headers, config) {
+        $scope.top100 = data;
+    });
+    $http.get('api/flop100').
+    success(function(data, status, headers, config) {
+        $scope.flop100 = data;
+    });
 
     $scope.carousel_duration = 5; //seconds
 }])
@@ -153,7 +139,7 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         else console.log(data)
     });
     $rootScope.ws.$on('players', function(data) {
-        console.log(data)
+        console.log(data);
         $rootScope.gameStatus.left.players = data.left|0;
         $rootScope.gameStatus.right.players = data.right|0;
         $rootScope.gameStatus.totalPlayers = data.total|0;
@@ -163,6 +149,10 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
         $rootScope.gameStatus.left.score = data.left|0;
         $rootScope.gameStatus.right.score = data.right|0;
         $rootScope.$apply();
+    });
+    $rootScope.ws.$on('notification', function(data) {
+        $rootScope.notifications.push({"name": data.user.name, "role": data.user.role, "score": data.type});
+        console.log("received notification " + data.type)
     });
     $rootScope.ws.$on('ping', function(data) {
         console.log("websocket ping - " + new Date(data.ts))

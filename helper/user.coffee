@@ -14,6 +14,11 @@ UserHelper = {
       callback users[0]
 
   direction: (user, input) ->
+    console.log("user direction " + user);
+
+    if !user.score
+      user.score=0
+
     if input == 'up'
       GameHelper.up(user.role)
       if user.role == global.fictif.side
@@ -38,6 +43,7 @@ UserHelper = {
           user.score++
     else
       console.error('Input unknown')
+    console.log("user direction before save " + user);
     user.save (err) ->
       if err
         console.error("fail to save user" + user + ":" + err)
