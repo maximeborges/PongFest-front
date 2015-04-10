@@ -87,12 +87,12 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
     $scope.notifications = [];
     $http.get('api/top100').
     success(function(data, status, headers, config) {
-        $scope.top100 = JSON.parse(data);
+        $scope.top100 = data;
     });
     $http.get('api/flop100').
     success(function(data, status, headers, config) {
-        $scope.flop100 = JSON.parse(data);
-    });    
+        $scope.flop100 = data;
+    });
 }])
 .controller('subscribeCtrl', [function() {
 
