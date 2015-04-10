@@ -147,6 +147,15 @@ app.ws '/ws', (ws, req) ->
       token = data.id
       name = data.name || data.firstName + " " + data.lastName
 
+      broadcastPlayerInfo = (user) ->
+        console.log("Notifying all users that "+user.name+" has joined")
+        totalPlayers++
+        ws.send JSON.stringify({event: 'user', data: user})
+        wsClients.forEach (client) ->
+          if client.readyState == 1
+            client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
+            client.send JSON.stringify({event: "notification", data: {user: user, type: 'connect'}})
+
       creation = (ws, message, event, data) ->
         token = data.id
         name = data.name || data.firstName + " " + data.lastName
@@ -165,25 +174,20 @@ app.ws '/ws', (ws, req) ->
             console.error("fail to save user" + user + ":" + err)
             ws.send JSON.stringify({event: 'user', data: err})
           else
-            totalPlayers++
-            ws.send JSON.stringify({event: 'user', data: user})
-            wsClients.forEach (client) ->
-              if client.readyState == 1
-                client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
-                client.send JSON.stringify({event: "notification", data: {user: user, type: 'connect'}})
+            broadcastPlayerInfo(user)
 
       if !token
         User.find {"name": name}, (err, user) ->
           if user.length > 0
             console.log 'User '+name+" already exists"
-            ws.send JSON.stringify({event: 'user', data: user[0]})
+            broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
       else
         User.find {"token": token}, (err, user) ->
           if user.length > 0
             console.log 'Facebook user '+name+" already exists"
-            ws.send JSON.stringify({event: 'user', data: user[0]})
+            broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
 
