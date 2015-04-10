@@ -36,16 +36,9 @@
                         <div class="layer">
                             <p class="title">En direct <strong>live !</strong></p>
                             <ul class="messages">
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                                <li ng-repeat="item in notifications">
+                                    <strong class="blue" ng-class="{blue: item.role == 'left'"}>{{item.name}}</strong> {{item.score}}
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -53,16 +46,9 @@
                         <div class="layer">
                             <p class="title">Top 10 des joueurs <strong>Bienveillants !</strong></p>
                             <ul class="messages">
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                                <li ng-repeat="item in top100 | size: 10 trackby $index">
+                                    <strong>{{$index+1}}.</strong> <strong class="blue" ng-class="{blue: item.role == 'left'"}>{{item.name}}</strong> ({{item.score}} pts.)
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -70,16 +56,9 @@
                         <div class="layer">
                             <p class="title">Flop 10 des joueurs <strong>anarchistes !</strong></p>
                             <ul class="messages">
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="blue">Lorem</strong> ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                                <li><strong class="green">Lorem</strong>  ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                                <li ng-repeat="item in flop100 | size: 10 track by $index">
+                                    <strong>{{$index+1}}.</strong> <strong class="blue" ng-class="{blue: item.role == 'left'"}>{{item.name}}</strong> ({{item.score}} pts.)
+                                </li>
                             </ul>
                         </div>
                     </li>
