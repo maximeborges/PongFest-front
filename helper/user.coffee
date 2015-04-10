@@ -15,6 +15,10 @@ UserHelper = {
 
   direction: (user, input) ->
     console.log("user direction " + user);
+
+    if !user.score
+      user.score=0
+
     if input == 'up'
       GameHelper.up(user.role)
       if user.role == global.fictif.side
