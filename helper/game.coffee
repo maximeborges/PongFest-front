@@ -51,6 +51,10 @@ GameHelper = {
     
 }
 
+commandSendFrequency = parseInt(process.env.COMMAND_SEND_FREQUENCY_MS) || 500
+
+console.log("Command send frequency set to "+commandSendFrequency+" ms")
+
 setInterval(GameHelper.sendDirection, 500)
 
 module.exports = GameHelper
