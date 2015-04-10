@@ -3,6 +3,10 @@ GameHelper = require "./game"
 
 global.role = left: 0, right: 0
 
+randomNum = (max,min=0) ->
+  return Math.floor(Math.random() * (max - min) + min)
+  # min is set to 0 by default but a different value can be passed to function
+ 
 UserHelper = {
   find: (token, errorCallback, callback) ->
     User.find token: token, (err, users) ->
@@ -51,7 +55,7 @@ UserHelper = {
         res.send "something wrong happened"
 
   giveRole: ->
-    if global.role.left > global.role.right
+    if randomNum(10) > 5
       global.role.right++
       return "right"
     else

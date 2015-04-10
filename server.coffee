@@ -159,7 +159,7 @@ app.ws '/ws', (ws, req) ->
       creation = (ws, message, event, data) ->
         token = data.id
         name = data.name || data.firstName + " " + data.lastName
-        console.log "Creating a new user "+name
+        console.log "Creating a new user "+name+" from data "+JSON.stringify(data)
 
         if !token
           token = randtoken.generate(16)
@@ -180,6 +180,10 @@ app.ws '/ws', (ws, req) ->
         User.find {"name": name}, (err, user) ->
           if user.length > 0
             console.log 'User '+name+" already exists"
+            role = UserHelper.giveRole()
+            currentUser=user[0]
+            currentUser.role = role 
+            currentUser.save()
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
@@ -187,6 +191,10 @@ app.ws '/ws', (ws, req) ->
         User.find {"token": token}, (err, user) ->
           if user.length > 0
             console.log 'Facebook user '+name+" already exists"
+            role = UserHelper.giveRole()
+            currentUser=user[0]
+            currentUser.role = role 
+            currentUser.save()
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
