@@ -55,11 +55,16 @@ UserHelper = {
         res.send "something wrong happened"
 
   giveRole: ->
-    #if randomNum(10) > 5
-    if global.role.left > global.role.right
-      return "right"
+    if process.env.ROLE_ASSIGNMENT_MODE == "random"
+      if randomNum(10) > 5
+        return "right"
+      else
+        return "left"
     else
-      return "left"
+      if global.role.left > global.role.right
+        return "right"
+      else
+        return "left"
 }
 
 module.exports = UserHelper
