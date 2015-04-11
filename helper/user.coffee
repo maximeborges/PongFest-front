@@ -55,7 +55,8 @@ UserHelper = {
         res.send "something wrong happened"
 
   giveRole: ->
-    if randomNum(10) > 5
+    #if randomNum(10) > 5
+    if global.role.left > global.role.right
       return "right"
     else
       return "left"
