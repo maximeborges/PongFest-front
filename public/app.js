@@ -128,11 +128,19 @@ function($rootScope, $scope, $timeout, Facebook, $http, $state) {
 
     $rootScope.ws.$on('user', function(data) {
         if(data._id) {
+            var nameSplit = data.name.split(" ");
+            var firstName = nameSplit[0];
+            var lastName = ""
+            if(nameSplit.length > 1) {
+              lastName = nameSplit.splice(1).join(" ");
+            }
             $rootScope.user = {
                 id: data._id,
                 token: data.token,
                 name: data.name,
-                role: data.role
+                role: data.role,
+                firstName: firstName,
+                lastName: lastName,
             };
             $state.go('game');
         }

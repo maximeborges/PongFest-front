@@ -19,7 +19,7 @@ UserHelper = {
       callback users[0]
 
   direction: (user, input) ->
-    console.log("user direction " + user.name + " " + input);
+    console.log("user direction " + user.name + " " + input)
 
     if !user.score
       user.score=0
