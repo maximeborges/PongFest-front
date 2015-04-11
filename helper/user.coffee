@@ -2,6 +2,7 @@ User = require "../models/user"
 GameHelper = require "./game"
 
 global.role = left: 0, right: 0
+global.alternate = 0
 
 randomNum = (max,min=0) ->
   return Math.floor(Math.random() * (max - min) + min)
@@ -59,6 +60,13 @@ UserHelper = {
       if randomNum(10) > 5
         return "right"
       else
+        return "left"
+    else if process.env.ROLE_ASSIGNMENT_MODE == "alternate"
+      if global.alternate % 2 == 0
+        global.alternate++
+        return "right"
+      else
+        global.alternate++
         return "left"
     else
       if global.role.left > global.role.right
