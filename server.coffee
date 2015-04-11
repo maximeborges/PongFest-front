@@ -156,6 +156,12 @@ app.ws '/ws', (ws, req) ->
             client.send JSON.stringify({event: "players", data: {left: global.role.left, right: global.role.right, total: totalPlayers}})
             client.send JSON.stringify({event: "notification", data: {user: user, type: 'connect'}})
 
+      incrementRole = (role) ->
+        if role == 'left'
+          global.role.left++
+        else
+          global.role.right++          
+          
       creation = (ws, message, event, data) ->
         token = data.id
         name = data.name || data.firstName + " " + data.lastName
@@ -174,6 +180,7 @@ app.ws '/ws', (ws, req) ->
             console.error("fail to save user" + user + ":" + err)
             ws.send JSON.stringify({event: 'user', data: err})
           else
+            incrementRole(user.role)
             broadcastPlayerInfo(user)
 
       if !token
@@ -185,11 +192,7 @@ app.ws '/ws', (ws, req) ->
             currentUser.role = role 
             currentUser.save()
             broadcastPlayerInfo(user[0])
-            # updates the number of player in the user's team
-            if user.role == 'left'
-              global.role.left++
-            else
-              global.role.right++
+            incrementRole(user.role)
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
@@ -201,11 +204,7 @@ app.ws '/ws', (ws, req) ->
             currentUser=user[0]
             currentUser.role = role 
             currentUser.save()
-            # updates the number of player in the user's team
-            if user.role == 'left'
-              global.role.left++
-            else
-              global.role.right++
+            incrementRole(user.role)
             broadcastPlayerInfo(user[0])
           else
             creation ws, message, event, data
